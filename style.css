@@ -1,6 +1,8 @@
 * {
   box-sizing: border-box;
 }
+
+/* بداية سهام  */
 nav {
   background-color: #f0f0f0;
   padding: 10px;
@@ -102,4 +104,4 @@ body {
       color: #333;
     }
 
-
+/* بداية سهام  */
