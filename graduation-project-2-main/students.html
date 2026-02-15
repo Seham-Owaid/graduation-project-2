@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>الطالبات</title>
+    <link rel="stylesheet" href="students.css" />
+</head>
+
+<body>
+
+    <header class="topbar">
+        <a href="students.html" class="back-btn">←</a>
+        <h1 class="title" id="pageTitle">الطالبات</h1>
+        <div></div>
+    </header>
+
+    <main class="students">
+
+        <div class="grade-list">
+            <a href="students.html?grade=1" class="grade-item">الصف الأول الابتدائي</a>
+            <a href="students.html?grade=2" class="grade-item">الصف الثاني الابتدائي</a>
+            <a href="students.html?grade=3" class="grade-item">الصف الثالث الابتدائي</a>
+            <a href="students.html?grade=4" class="grade-item">الصف الرابع الابتدائي</a>
+            <a href="students.html?grade=5" class="grade-item">الصف الخامس الابتدائي</a>
+            <a href="students.html?grade=6" class="grade-item">الصف السادس الابتدائي</a>
+        </div>
+
+    </main>
+
+   <script>
+  const match = window.location.search.match(/grade=(\d+)/);
+  const grade = match ? match[1] : null;
+
+  const gradeNames = {
+    "1": "الأول",
+    "2": "الثاني",
+    "3": "الثالث",
+    "4": "الرابع",
+    "5": "الخامس",
+    "6": "السادس"
+  };
+
+  const studentsByGrade = {
+    "1": [
+      { name: "جود العتيبي", bus: 12 },
+      { name: "لانا الشهراني", bus: 15 },
+      { name: "رهف المالكي", bus: 9 }
+    ],
+    "2": [
+      { name: "ريم الحارثي", bus: 12 },
+      { name: "دانة العتيبي", bus: 7 },
+      { name: "سارة الغامدي", bus: 15 }
+    ],
+    "3": [
+      { name: "نورة الشهري", bus: 9 },
+      { name: "هيا العتيبي", bus: 12 },
+      { name: "لمى الحربي", bus: 7 }
+    ],
+    "4": [
+      { name: "شهد الزهراني", bus: 15 },
+      { name: "جنى الغامدي", bus: 9 },
+      { name: "غلا الحارثي", bus: 12 }
+    ],
+    "5": [
+      { name: "أريام العتيبي", bus: 7 },
+      { name: "ليان الشهري", bus: 15 },
+      { name: "تالا الحربي", bus: 9 }
+    ],
+    "6": [
+      { name: "لميس الغامدي", bus: 12 },
+      { name: "رهف الشهري", bus: 7 },
+      { name: "رزان الحارثي", bus: 15 }
+    ]
+  };
+
+  const main = document.querySelector(".students");
+  const title = document.getElementById("pageTitle");
+  const backBtn = document.getElementById("backBtn");
+
+  // ✅ افتراضيًا: إحنا في قائمة الصفوف
+ if (backBtn) backBtn.style.display = "none";
+
+
+  // ✅ إذا تم اختيار صف
+  if (grade) {
+   if (backBtn) backBtn.style.display = "block";
+    if (title) title.textContent = `طالبات الصف ${gradeNames[grade] || grade}`;
+
+    const list = studentsByGrade[grade] || [];
+    const rowsHtml = list.map(s => `
+      <div class="student-row">
+        <div>
+          <h3 class="student-name">${s.name}</h3>
+          <p class="student-info">الصف ${gradeNames[grade] || grade} • الباص ${s.bus}</p>
+        </div>
+      </div>
+    `).join("");
+
+    main.innerHTML = `
+      <div class="student-card">
+        ${rowsHtml || `<p class="empty">لا توجد طالبات لهذا الصف.</p>`}
+      </div>
+    `;
+  }
+</script>
+
+
+
+
+
+</body>
+
+</html>
