@@ -1,0 +1,102 @@
+/* بدايه فتون */
+:root{
+  --bg: #f1f9fb;
+  --card: #ffffff;
+  --accent-1: #2dafb4;
+  --accent-2: #2fb2b6;
+  --accent-hover-1: #177376;
+  --accent-hover-2: #1b7c80;
+  --muted:#6c757d;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background:var(--bg);
+  color:#111;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+.container{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+.logo{
+  width:100px;
+  height:auto;
+  object-fit:contain;
+  margin-bottom:14px;
+}
+
+h1{
+  margin:0 0 18px 0;
+  font-size:20px;
+  font-weight:700;
+  color:var(--accent-hover-1);
+}
+
+
+.login-form{
+  width:100%;
+  max-width:360px;
+  background:var(--card);
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 8px 22px rgba(16,24,40,0.08);
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+input{
+  width:100%;
+  padding:12px 14px;
+  border:1px solid rgba(0,0,0,0.08);
+  border-radius:10px;
+  font-size:15px;
+  outline:none;
+  background:#fbfeff;
+  color:#0b2b2a;
+}
+
+input::placeholder{color:#8aa3a3}
+
+input:focus{
+  border-color:var(--accent-1);
+  box-shadow:0 6px 20px rgba(47,178,182,0.12);
+}
+
+.submit{
+  margin-top:6px;
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  color:#fff;
+  border:none;
+  padding:12px 14px;
+  border-radius:12px;
+  font-size:16px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.submit:hover{
+  background: linear-gradient(90deg, var(--accent-hover-1), var(--accent-hover-2));
+}
+
+.submit:hover{opacity:0.95}
+
+@media (max-width:420px){
+  .logo{width:60px;height:60px}
+  .login-form{padding:14px}
+}
+
+/* نهاية فتون */
+
+
