@@ -1,0 +1,316 @@
+/*بداية داليا   */
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>الرسوم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f0f2f8;
+            --white: #ffffff;
+            --accent:#1b7c80;
+            --accent-light: #e6fafb;
+            --paid: #16a34a;
+            --paid-bg: #dcfce7;
+            --unpaid: #dc2626;
+            --unpaid-bg: #fee2e2;
+            --text: #1e1e2e;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 2px 16px rgba(0,0,0,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            max-width: 430px;
+            margin: 0 auto;
+            color: var(--text);
+        }
+
+        /* HEADER */
+        .header {
+            background: var(--accent);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 18px;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.18);
+            border: none;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .back-btn:active { background: rgba(255,255,255,0.3); }
+        .back-btn svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+        .header-spacer { width: 38px; }
+
+        /* FILTER TABS */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            padding: 16px 18px 10px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .tabs::-webkit-scrollbar { display: none; }
+
+        .tab {
+            flex-shrink: 0;
+            padding: 7px 18px;
+            border-radius: 20px;
+            border: 1.5px solid var(--border);
+            background: var(--white);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* SECTION LABEL */
+        .section-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            letter-spacing: 0.8px;
+            padding: 8px 18px 6px;
+        }
+
+        /* CARDS */
+        .list {
+            padding: 4px 14px 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 18px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.35s ease both;
+        }
+
+        .card:nth-child(2) { animation-delay: 0.07s; }
+        .card:nth-child(3) { animation-delay: 0.14s; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .avatar-wrap { position: relative; flex-shrink: 0; }
+
+        .avatar {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            object-fit: cover;
+            background: #e5e7eb;
+            display: block;
+        }
+
+        .avatar-badge {
+            position: absolute;
+            bottom: -4px;
+            left: -4px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-badge svg { width: 10px; height: 10px; fill: none; stroke: #fff; stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; }
+        .badge-paid   { background: var(--paid); }
+        .badge-unpaid { background: var(--unpaid); }
+
+        .info { flex: 1; min-width: 0; }
+
+        .info .name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .status-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        .status-tag.paid   { background: var(--paid-bg);   color: var(--paid); }
+        .status-tag.unpaid { background: var(--unpaid-bg); color: var(--unpaid); }
+
+        .status-tag .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+        .paid   .dot { background: var(--paid); }
+        .unpaid .dot { background: var(--unpaid); }
+
+        .meta { font-size: 11px; color: var(--muted); margin-top: 5px; }
+
+        .action-btn {
+            background: var(--accent-light);
+            border: none;
+            border-radius: 12px;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.18s;
+        }
+
+        .action-btn:active { background: #ddd9ff; transform: scale(0.93); }
+        .action-btn svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="header-inner">
+        <button class="back-btn" onclick="history.back()">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <h1>رسوم الباص</h1>
+        <div class="header-spacer"></div>
+    </div>
+</div>
+
+<!-- FILTER TABS -->
+<div class="tabs">
+    <button class="tab active" onclick="filterCards('all', this)">الكل</button>
+    <button class="tab" onclick="filterCards('paid', this)">تم الدفع</button>
+    <button class="tab" onclick="filterCards('unpaid', this)">لم يُدفع</button>
+</div>
+
+<div class="section-label">قائمة الطلاب</div>
+
+<!-- CARDS -->
+<div class="list" id="cardList">
+
+    <div class="card" data-status="paid">
+        <div class="avatar-wrap">
+            <img src="https://storage.googleapis.com/tagjs-prod.appspot.com/v1/SU4JSnEqKB/487lwons_expires_30_days.png" class="avatar" alt="سارة">
+            <div class="avatar-badge badge-paid">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+        </div>
+        <div class="info">
+            <div class="name">سارة محمد</div>
+            <span class="status-tag paid"><span class="dot"></span>تم دفع الرسوم</span>
+            <div class="meta">الفصل الأول · منذ يومين</div>
+        </div>
+        <button class="action-btn">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+    </div>
+
+    <div class="card" data-status="unpaid">
+        <div class="avatar-wrap">
+            <img src="https://storage.googleapis.com/tagjs-prod.appspot.com/v1/SU4JSnEqKB/wp256fto_expires_30_days.png" class="avatar" alt="شهد">
+            <div class="avatar-badge badge-unpaid">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </div>
+        </div>
+        <div class="info">
+            <div class="name">شهد سلطان</div>
+            <span class="status-tag unpaid"><span class="dot"></span>لم يتم الدفع</span>
+            <div class="meta">الفصل الأول · متأخر 5 أيام</div>
+        </div>
+        <button class="action-btn">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+    </div>
+
+    <div class="card" data-status="paid">
+        <div class="avatar-wrap">
+            <img src="https://storage.googleapis.com/tagjs-prod.appspot.com/v1/SU4JSnEqKB/spp6k5qg_expires_30_days.png" class="avatar" alt="روز">
+            <div class="avatar-badge badge-paid">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+        </div>
+        <div class="info">
+            <div class="name">روز أحمد</div>
+            <span class="status-tag paid"><span class="dot"></span>تم دفع الرسوم</span>
+            <div class="meta">الفصل الأول · اليوم</div>
+        </div>
+        <button class="action-btn">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+    </div>
+
+</div>
+
+
+
+<script>
+    function filterCards(status, btn) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+
+        document.querySelectorAll('.card').forEach(card => {
+            if (status === 'all' || card.dataset.status === status) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
+/*نهاية داليا   */
