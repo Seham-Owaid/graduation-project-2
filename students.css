@@ -1,0 +1,106 @@
+/* بداية شجون */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial, sans-serif;
+    background: #f3f3f3;
+    color: #111;
+}
+
+/* الشريط العلوي */
+.topbar {
+    height: 70px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.topbar-spacer {
+    width: 22px;
+}
+
+.back-btn {
+    text-decoration: none;
+    font-size: 22px;
+    color: #000;
+}
+
+/* مساحة الصفحة */
+.students {
+    padding: 20px;
+}
+
+/* قائمة الصفوف */
+.grade-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.grade-item {
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid #eeeeee;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    color: #000;
+}
+
+.grade-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* قائمة الطالبات داخل الصف */
+.student-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.student-row {
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 18px;
+    border: 1px solid #eeeeee;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.student-name {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.student-info {
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: #777;
+}
+
+.empty {
+    margin: 0;
+    padding: 18px;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #eeeeee;
+}
+
+/* نهاية شجون */
