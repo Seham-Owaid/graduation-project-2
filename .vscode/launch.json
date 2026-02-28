@@ -7,7 +7,7 @@
         {
             "type": "msedge",
             "request": "launch",
-            "name": "Open Financial fees.html",
+   \         "name": "Open Financial fees.html",
             "file": "c:\\Users\\shujo\\Desktop\\graduation-project-2-main\\Financial fees.html"
         }
     ]

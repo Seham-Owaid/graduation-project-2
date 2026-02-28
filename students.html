@@ -1,106 +1,161 @@
-<--بداية شجون -->
-    <!doctype html>
-    <html lang="ar" dir="rtl">
+<!-- بداية شجون -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>الطالبات</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="students.css" />
+</head>
 
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>الطالبات</title>
-        <link rel="stylesheet" href="students.css" />
-    </head>
+<body>
 
-    <body>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <a href="javascript:void(0)" class="back-btn" id="backBtn" aria-label="رجوع">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </a>
+      <h1 id="pageTitle">الطالبات</h1>
+      <div class="header-spacer"></div>
+    </div>
+  </div>
 
-        <header class="topbar">
-            <a href="students.html" class="back-btn" aria-label="رجوع">←</a>
-            <h1 class="title" id="pageTitle">الطالبات</h1>
-            <span class="topbar-spacer"></span>
-        </header>
+  <div class="section-label" id="sectionLabel">قائمة الصفوف</div>
 
-        <main class="students">
-            <div class="grade-list">
-                <a href="students.html?grade=1" class="grade-item">الصف الأول الابتدائي</a>
-                <a href="students.html?grade=2" class="grade-item">الصف الثاني الابتدائي</a>
-                <a href="students.html?grade=3" class="grade-item">الصف الثالث الابتدائي</a>
-                <a href="students.html?grade=4" class="grade-item">الصف الرابع الابتدائي</a>
-                <a href="students.html?grade=5" class="grade-item">الصف الخامس الابتدائي</a>
-                <a href="students.html?grade=6" class="grade-item">الصف السادس الابتدائي</a>
-            </div>
-        </main>
+  <!-- GRADE LIST (default view) -->
+  <div class="list" id="gradeList">
 
-        <script>
-            const match = window.location.search.match(/grade=(\d+)/);
-            const grade = match ? match[1] : null;
+    <div class="card" onclick="showStudents('1')">
+      <div class="icon-box"><span class="grade-num">1</span></div>
+      <div class="info">
+        <div class="name">الصف الأول الابتدائي</div>
+        <div class="meta">3 طالبات</div>
+      </div>
+      <div class="arrow-btn">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
 
-            const gradeNames = {
-                "1": "الأول",
-                "2": "الثاني",
-                "3": "الثالث",
-                "4": "الرابع",
-                "5": "الخامس",
-                "6": "السادس"
-            };
+    <div class="card" onclick="showStudents('2')">
+      <div class="icon-box"><span class="grade-num">2</span></div>
+      <div class="info">
+        <div class="name">الصف الثاني الابتدائي</div>
+        <div class="meta">3 طالبات</div>
+      </div>
+      <div class="arrow-btn">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
 
-            // بيانات الطالبات لكل صف (عدّلي الأسماء والأرقام براحتك)
-            const studentsByGrade = {
-                "1": [
-                    { name: "جود العتيبي", bus: 12 },
-                    { name: "لانا الشهراني", bus: 15 },
-                    { name: "رهف المالكي", bus: 9 }
-                ],
-                "2": [
-                    { name: "ريم الحارثي", bus: 12 },
-                    { name: "دانة العتيبي", bus: 7 },
-                    { name: "سارة الغامدي", bus: 15 }
-                ],
-                "3": [
-                    { name: "نورة الشهري", bus: 9 },
-                    { name: "هيا العتيبي", bus: 12 },
-                    { name: "لمى الحربي", bus: 7 }
-                ],
-                "4": [
-                    { name: "شهد الزهراني", bus: 15 },
-                    { name: "جنى الغامدي", bus: 9 },
-                    { name: "غلا الحارثي", bus: 12 }
-                ],
-                "5": [
-                    { name: "أريام العتيبي", bus: 7 },
-                    { name: "ليان الشهري", bus: 15 },
-                    { name: "تالا الحربي", bus: 9 }
-                ],
-                "6": [
-                    { name: "لميس الغامدي", bus: 12 },
-                    { name: "رهف الشهري", bus: 7 },
-                    { name: "رزان الحارثي", bus: 15 }
-                ]
-            };
+    <div class="card" onclick="showStudents('3')">
+      <div class="icon-box"><span class="grade-num">3</span></div>
+      <div class="info">
+        <div class="name">الصف الثالث الابتدائي</div>
+        <div class="meta">3 طالبات</div>
+      </div>
+      <div class="arrow-btn">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
 
-            if (grade) {
-                const main = document.querySelector(".students");
-                const title = document.getElementById("pageTitle");
+    <div class="card" onclick="showStudents('4')">
+      <div class="icon-box"><span class="grade-num">4</span></div>
+      <div class="info">
+        <div class="name">الصف الرابع الابتدائي</div>
+        <div class="meta">3 طالبات</div>
+      </div>
+      <div class="arrow-btn">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
 
-                const gradeLabel = gradeNames[grade] || grade;
-                title.textContent = `طالبات الصف ${gradeLabel}`;
+    <div class="card" onclick="showStudents('5')">
+      <div class="icon-box"><span class="grade-num">5</span></div>
+      <div class="info">
+        <div class="name">الصف الخامس الابتدائي</div>
+        <div class="meta">3 طالبات</div>
+      </div>
+      <div class="arrow-btn">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
 
-                const list = studentsByGrade[grade] || [];
-                const rowsHtml = list.map(s => `
+    <div class="card" onclick="showStudents('6')">
+      <div class="icon-box"><span class="grade-num">6</span></div>
+      <div class="info">
+        <div class="name">الصف السادس الابتدائي</div>
+        <div class="meta">3 طالبات</div>
+      </div>
+      <div class="arrow-btn">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- STUDENT LIST (hidden by default) -->
+  <div id="studentList" style="display:none"></div>
+
+  <script>
+    const gradeNames = {
+      "1": "الأول", "2": "الثاني", "3": "الثالث",
+      "4": "الرابع", "5": "الخامس", "6": "السادس"
+    };
+
+    const avatars = ["🧒","👧","🧕","👩","🌸","⭐️"];
+
+    const studentsByGrade = {
+      "1": [{ name: "جود العتيبي", bus: 12 }, { name: "لانا الشهراني", bus: 15 }, { name: "رهف المالكي", bus: 9 }],
+      "2": [{ name: "ريم الحارثي", bus: 12 }, { name: "دانة العتيبي", bus: 7 }, { name: "سارة الغامدي", bus: 15 }],
+      "3": [{ name: "نورة الشهري", bus: 9 }, { name: "هيا العتيبي", bus: 12 }, { name: "لمى الحربي", bus: 7 }],
+      "4": [{ name: "شهد الزهراني", bus: 15 }, { name: "جنى الغامدي", bus: 9 }, { name: "غلا الحارثي", bus: 12 }],
+      "5": [{ name: "أريام العتيبي", bus: 7 }, { name: "ليان الشهري", bus: 15 }, { name: "تالا الحربي", bus: 9 }],
+      "6": [{ name: "لميس الغامدي", bus: 12 }, { name: "رهف الشهري", bus: 7 }, { name: "رزان الحارثي", bus: 15 }]
+    };
+
+    function showStudents(grade) {
+      const list = studentsByGrade[grade] || [];
+      const label = gradeNames[grade] || grade;
+
+      document.getElementById('pageTitle').textContent = طالبات الصف ${label};
+      document.getElementById('sectionLabel').textContent = 'قائمة الطالبات';
+      document.getElementById('gradeList').style.display = 'none';
+
+      // زر الرجوع يرجع لقائمة الصفوف (مو history.back)
+      document.getElementById('backBtn').onclick = showGrades;
+
+      const rows = list.map((s, i) => `
         <div class="student-row">
-          <div>
-            <h3 class="student-name">${s.name}</h3>
-            <p class="student-info">الصف ${gradeLabel} • الباص ${s.bus}</p>
+          <div class="student-avatar">${avatars[i % avatars.length]}</div>
+          <div class="student-info">
+            <div class="student-name">${s.name}</div>
+            <div class="student-meta">الصف ${label}</div>
           </div>
+          <span class="bus-badge">باص ${s.bus}</span>
         </div>
-      `).join("");
+      ).join('') || `<p class="empty">لا توجد طالبات لهذا الصف.</p>;
 
-                main.innerHTML = `
-        <div class="student-card">
-          ${rowsHtml || `<p class="empty">لا توجد طالبات لهذا الصف.</p>`}
-        </div>
-      `;
-            }
-        </script>
+      document.getElementById('studentList').innerHTML = <div class="student-card">${rows}</div>;
+      document.getElementById('studentList').style.display = 'block';
+    }
 
-    </body>
+    function showGrades() {
+      document.getElementById('pageTitle').textContent = 'الطالبات';
+      document.getElementById('sectionLabel').textContent = 'قائمة الصفوف';
+      document.getElementById('gradeList').style.display = 'flex';
+      document.getElementById('studentList').style.display = 'none';
 
-    </html>
-    <--نهاية شجون -->
+      // هنا زر الرجوع يرجع لصفحة قبلها لو تبين
+      document.getElementById('backBtn').onclick = () => history.back();
+    }
+
+    // الوضع الافتراضي: الرجوع يرجع لصفحة قبلها
+    document.getElementById('backBtn').onclick = () => history.back();
+  </script>
+
+</body>
+</html>
+<--! نهاية شجون -->
+ل

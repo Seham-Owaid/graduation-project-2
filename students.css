@@ -1,106 +1,262 @@
-/* بداية شجون */
-* {
-    box-sizing: border-box;
+/*بداية شجون*/
+:root {
+  --bg: #f0f2f8;
+  --white: #ffffff;
+  --accent: #1b7c80;
+  --accent-light: #e6fafb;
+  --text: #1e1e2e;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --shadow: 0 2px 16px rgba(0,0,0,0.08);
 }
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
-    margin: 0;
-    font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial, sans-serif;
-    background: #f3f3f3;
-    color: #111;
+  font-family: 'Tajawal', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  max-width: 430px;
+  margin: 0 auto;
+  color: var(--text);
 }
 
-/* الشريط العلوي */
-.topbar {
-    height: 70px;
-    background: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    border-bottom: 1px solid #eaeaea;
+/* HEADER */
+.header {
+  background: var(--accent);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.title {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 600;
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
 }
 
-.topbar-spacer {
-    width: 22px;
+.header h1 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
 }
 
 .back-btn {
-    text-decoration: none;
-    font-size: 22px;
-    color: #000;
+  background: rgba(255,255,255,0.18);
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-decoration: none;
 }
 
-/* مساحة الصفحة */
-.students {
-    padding: 20px;
+.back-btn:active { background: rgba(255,255,255,0.3); }
+.back-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.header-spacer { width: 38px; }
+
+/* SECTION LABEL */
+.section-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.8px;
+  padding: 16px 18px 6px;
 }
 
-/* قائمة الصفوف */
-.grade-list {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+/* GRADE LIST */
+.list {
+  padding: 4px 14px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
 }
 
-.grade-item {
-    background: #ffffff;
-    padding: 18px;
-    border-radius: 16px;
-    font-size: 16px;
-    font-weight: 500;
-    border: 1px solid #eeeeee;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-decoration: none;
-    color: #000;
+/* GRADE CARD */
+.card {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: inherit;
+  animation: slideUp 0.35s ease both;
+  cursor: pointer;
 }
 
-.grade-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+.card:nth-child(2) { animation-delay: 0.05s; }
+.card:nth-child(3) { animation-delay: 0.10s; }
+.card:nth-child(4) { animation-delay: 0.15s; }
+.card:nth-child(5) { animation-delay: 0.20s; }
+.card:nth-child(6) { animation-delay: 0.25s; }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* قائمة الطالبات داخل الصف */
+.card:active { transform: scale(0.98); }
+
+/* Grade icon box */
+.icon-box {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: var(--accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.grade-num {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+/* Info */
+.info { flex: 1; min-width: 0; }
+
+.info .name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.info .meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Arrow */
+.arrow-btn {
+  background: var(--accent-light);
+  border: none;
+  border-radius: 12px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.arrow-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ===== STUDENT VIEW ===== */
 .student-card {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  background: var(--white);
+  border-radius: 18px;
+  margin: 4px 14px 100px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
 }
 
 .student-row {
-    background: #ffffff;
-    padding: 18px;
-    border-radius: 18px;
-    border: 1px solid #eeeeee;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  animation: slideUp 0.35s ease both;
+  cursor: pointer;
+  transition: background 0.15s;
 }
+
+.student-row:last-child { border-bottom: none; }
+.student-row:active { background: var(--accent-light); }
+
+.student-row:nth-child(2) { animation-delay: 0.07s; }
+.student-row:nth-child(3) { animation-delay: 0.14s; }
+
+.student-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 20px;
+}
+
+.student-info { flex: 1; min-width: 0; }
 
 .student-name {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 3px;
 }
 
-.student-info {
-    margin: 6px 0 0;
-    font-size: 13px;
-    color: #777;
+.student-meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.bus-badge {
+  background: var(--accent-light);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  flex-shrink: 0;
 }
 
 .empty {
-    margin: 0;
-    padding: 18px;
-    background: #fff;
-    border-radius: 16px;
-    border: 1px solid #eeeeee;
+  text-align: center;
+  color: var(--muted);
+  padding: 32px 16px;
+  font-size: 14px;
 }
 
+/* =========================
+   Responsive (تغيير حسب الشاشة)
+   ========================= */
+
+/* شاشات أصغر (جوالات صغيرة) */
+@media (max-width: 360px) {
+  body { max-width: 100%; }
+  .header-inner { padding: 14px 14px; }
+  .list { padding: 4px 10px 90px; }
+  .card { padding: 12px; border-radius: 16px; }
+  .icon-box { width: 48px; height: 48px; border-radius: 12px; }
+  .grade-num { font-size: 18px; }
+  .info .name { font-size: 14px; }
+  .arrow-btn { width: 34px; height: 34px; border-radius: 10px; }
+  .student-card { margin: 4px 10px 90px; }
+}
+
+/* شاشات أكبر (تابلت/كمبيوتر) */
+@media (min-width: 431px) {
+  body { max-width: 430px; } /* نخليها نفس شكل الموبايل بالضبط */
+}
 /* نهاية شجون */
