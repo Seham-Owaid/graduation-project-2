@@ -1,22 +1,127 @@
-<!--بداية شجون-->
 <!doctype html>
 <html lang="ar" dir="rtl">
-<head name="viewport" content="">
+
+<head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>عين رقيب</title>
-  <link rel="stylesheet" href="welcome.css" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background-color: #e8eaed;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      direction: rtl;
+    }
+
+    .phone {
+      width: 100%;
+      max-width: 420px;
+      padding: 1.5rem;
+    }
+
+    .splash-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 3rem 2rem 2.5rem;
+      box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1.2rem;
+    }
+
+    .logo-wrapper {
+      background-color: #e8f5f3;
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 0.5rem;
+    }
+
+    .logo {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .logo-label {
+      font-size: 0.78rem;
+      color: #2a9d8f;
+      font-weight: 500;
+      margin-top: 6px;
+    }
+
+    h1.app-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #1a1a2e;
+      letter-spacing: 0.01em;
+    }
+
+    p.tagline {
+      font-size: 1rem;
+      color: #6b7280;
+      font-weight: 400;
+      line-height: 1.8;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      margin-top: 0.8rem;
+      padding: 0.9rem 1rem;
+      background-color: #2a9d8f;
+      color: #ffffff;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background-color: #21867a;
+    }
+  </style>
 </head>
-<body class="splash">
+
+<body>
   <main class="phone">
     <div class="splash-card">
-      <img class="logo" src="aynlogo.png" alt="شعار عين رقيب">
+
+      <div class="logo-wrapper">
+        <img class="logo" src="http://localhost/ayn-raqeeb-frontend/images/logo2.jpg" alt="شعار عين رقيب">
+        <div class="logo-label">عين رقيب</div>
+      </div>
+
       <h1 class="app-title">عين رقيب</h1>
-     <p class="tagline">آمان أبنائك بعد الله يبدأ من هنا، تتبع، اطمئن وتواصل</p>
+
+      <p class="tagline">
+        آمان أبنائك بعد الله يبدأ من هنا، تتبع،<br>
+        اطمئن وتواصل
+      </p>
 
       <a class="btn" href="role.html">متابعة</a>
+
     </div>
   </main>
 </body>
+
 </html>
-<!-- نهاية شجون -->
