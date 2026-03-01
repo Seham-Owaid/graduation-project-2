@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<!-- بداية عمل رهف -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title> مسح</title>
+
+    <style>
+        body {
+            margin: 0;
+            background-color: #ebedf0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 430px;
+            background-color: #000;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .scanner-view {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            background-color: #000;
+        }
+
+        .scan-frame {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 260px;
+            height: 260px;
+        }
+
+        .corner {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #1b7c80;
+        }
+
+        .tl {
+            top: 0;
+            left: 0;
+            border-right: 0;
+            border-bottom: 0;
+        }
+
+        .tr {
+            top: 0;
+            right: 0;
+            border-left: 0;
+            border-bottom: 0;
+        }
+
+        .bl {
+            bottom: 0;
+            left: 0;
+            border-right: 0;
+            border-top: 0;
+        }
+
+        .br {
+            bottom: 0;
+            right: 0;
+            border-left: 0;
+            border-top: 0;
+        }
+
+        /* زر الالتقاط */
+        .scan-trigger {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .scan-trigger-inner {
+            width: 56px;
+            height: 56px;
+            background: #fff;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="scanner-view">
+            <video id="camera-preview" autoplay playsinline style="display: none;"></video>
+
+            <!--  للتجريب فقط -->
+            <div id="camera-fallback" class="camera-fallback" style="display: none;">
+                <p>تعذر الوصول إلى الكاميرا. يمكنك استخدام المحاكاة بدلاً من ذلك.</p>
+                <button id="simulate-btn" class="scan-trigger">محاكاة التقاط صورة</button>
+            </div>
+
+            <div id="scan-frame" class="scan-frame">
+                <!-- زوايا الإطار -->
+                <div class="corner tl"></div>
+                <div class="corner tr"></div>
+                <div class="corner bl"></div>
+                <div class="corner br"></div>
+            </div>
+
+            <!-- زر المسح -->
+            <button id="capture-btn" class="scan-trigger" aria-label="التقاط صورة" style="display: none;">
+                <div class="scan-trigger-inner"></div>
+            </button>
+
+        </div>
+    </div>
+
+
+    <script>
+        const video = document.getElementById('camera-preview');
+        const captureBtn = document.getElementById('capture-btn');
+        const fallbackDiv = document.getElementById('camera-fallback');
+        const scanFrame = document.getElementById('scan-frame');
+        const simulateBtn = document.getElementById('simulate-btn');
+
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment' }
+                });
+                video.srcObject = stream;
+                video.style.display = 'block';
+                captureBtn.style.display = 'flex';
+                fallbackDiv.style.display = 'none';
+            } catch (err) {
+                video.style.display = 'none';
+                captureBtn.style.display = 'none';
+                fallbackDiv.style.display = 'block';
+                scanFrame.style.opacity = '0.5';
+            }
+        }
+
+        function getCropRect() {
+            const videoRect = video.getBoundingClientRect();
+            const frameRect = scanFrame.getBoundingClientRect();
+            const scaleX = video.videoWidth / videoRect.width;
+            const scaleY = video.videoHeight / videoRect.height;
+            const cropX = (frameRect.left - videoRect.left) * scaleX;
+            const cropY = (frameRect.top - videoRect.top) * scaleY;
+            const cropWidth = frameRect.width * scaleX;
+            const cropHeight = frameRect.height * scaleY;
+            return { x: cropX, y: cropY, width: cropWidth, height: cropHeight };
+        }
+
+        function captureImage() {
+            if (!video.videoWidth) return;
+            const { x, y, width, height } = getCropRect();
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            canvas.getContext('2d').drawImage(video, x, y, width, height, 0, 0, width, height);
+            sessionStorage.setItem('capturedImage', canvas.toDataURL('image/jpeg'));
+            window.location.href = 'qr_code.html';
+        }
+
+        function simulateCapture() {
+            // qr image to simulate the action
+            sessionStorage.setItem('capturedImage', 'qr.png');
+            window.location.href = 'qr_code.html';
+        }
+
+        captureBtn.addEventListener('click', captureImage);
+        simulateBtn.addEventListener('click', simulateCapture);
+        startCamera();
+    </script>
+    <!--  عمل رهف -->
+</body>
+
+</html>
