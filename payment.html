@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>الدفع</title>
+    <link rel="stylesheet" href="payment.css">
+  </head>
+  <body>
+    <!-- widget class kept for styling, but not shown to user -->
+    <div class="payment-widget">
+      <img class="aynlogo" alt="aynlogo" src="eyelogo.png">
+
+      <div class="fees-box">
+        <div class="fees-title">الرسوم</div>
+        <div class="fees-amount">200 ريال لترم واحد</div>
+      </div>
+
+      <div class="spacer"></div>
+
+      <div class="methods">
+        <button class="pay-badge" id="payBadge" title="badge">
+          <img src="pay.png" alt="pay" style="width: 60px;  height:auto;display:block">
+        </button>
+
+        <button class="paynow" id="payNow">ادفع الآن</button>
+      </div>
+
+      <div class="product-image"></div>
+    </div>
+
+    <script>
+      document.getElementById('payNow').addEventListener('click', function(){
+        alert('بدء عملية الدفع — هذه مجرد محاكاة.');
+      });
+    </script>
+  </body>
+</html>

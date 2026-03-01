@@ -1,12 +1,21 @@
 /* بدايه فتون */
-:root{
-  --bg: #f1f9fb;
+:root {
+  --bg: #f0f2f8;
   --card: #ffffff;
-  --accent-1: #2dafb4;
-  --accent-2: #2fb2b6;
+  --accent-1: #1b7c80;
+  --accent-2: #1b7c80;
   --accent-hover-1: #177376;
   --accent-hover-2: #1b7c80;
-  --muted:#6c757d;
+  --muted: #6b7280;
+  --white: #ffffff;
+  --accent: #1b7c80;
+  --accent-light: #e6fafb;
+  --paid: #16a34a;
+  --paid-bg: #dcfce7;
+  --unpaid: #dc2626;
+  --unpaid-bg: #fee2e2;
+  --text: #1e1e2e;
+  --border: #e5e7eb;
 }
 
 *{box-sizing:border-box}
@@ -15,7 +24,7 @@ body{
   margin:0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background:var(--bg);
-  color:#111;
+  color:var(--text);
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
 }
@@ -40,7 +49,7 @@ h1{
   margin:0 0 18px 0;
   font-size:20px;
   font-weight:700;
-  color:var(--accent-hover-1);
+  color:var(--accent);
 }
 
 
@@ -59,24 +68,24 @@ h1{
 input{
   width:100%;
   padding:12px 14px;
-  border:1px solid rgba(0,0,0,0.08);
+  border:1px solid var(--border);
   border-radius:10px;
   font-size:15px;
   outline:none;
-  background:#fbfeff;
-  color:#0b2b2a;
+  background:var(--accent-light);
+  color:var(--text);
 }
 
-input::placeholder{color:#8aa3a3}
+input::placeholder{color:var(--muted)}
 
 input:focus{
-  border-color:var(--accent-1);
-  box-shadow:0 6px 20px rgba(47,178,182,0.12);
+  border-color:var(--accent);
+  box-shadow:0 6px 20px rgba(27,124,128,0.12);
 }
 
 .submit{
   margin-top:6px;
-  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  background: var(--accent);
   color:#fff;
   border:none;
   padding:12px 14px;
@@ -87,7 +96,7 @@ input:focus{
 }
 
 .submit:hover{
-  background: linear-gradient(90deg, var(--accent-hover-1), var(--accent-hover-2));
+  background: var(--accent-hover-2);
 }
 
 .submit:hover{opacity:0.95}
@@ -98,5 +107,30 @@ input:focus{
 }
 
 /* نهاية فتون */
+
+/* Password toggle styles */
+.password-wrapper{position:relative}
+.pw-toggle{
+  position:absolute;
+  left:10px; /* RTL: place on left inside input */
+  top:50%;
+  transform:translateY(-50%);
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:4px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#000; /* always black */
+}
+.pw-toggle:focus{outline:none}
+.pw-toggle .eye-icon{display:block;width:16px;height:16px}
+.nationalid-msg{color:#c00;margin-top:6px;font-size:14px}
+.valid{border-color: #0a0}
+.invalid{border-color: #c00}
+
+/* ensure input reserves space for left toggle */
+.password-wrapper input{padding-left:44px}
 
 

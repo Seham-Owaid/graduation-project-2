@@ -1,0 +1,38 @@
+/* Synced with Financial fees.html color scheme */
+:root {
+  --bg: #f0f2f8;
+  --white: #ffffff;
+  --accent: #1b7c80;
+  --accent-light: #e6fafb;
+  --paid: #16a34a;
+  --paid-bg: #dcfce7;
+  --unpaid: #dc2626;
+  --unpaid-bg: #fee2e2;
+  --text: #1e1e2e;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+}
+*{box-sizing:border-box;font-family: Arial, 'Noto Naskh Arabic', sans-serif}
+body{margin:0;padding:20px;background:var(--bg);color:var(--text)}
+.payment-widget{max-width:420px;margin:18px auto;padding:22px;border-radius:10px;border:1px solid var(--border);direction:rtl;display:flex;flex-direction:column;align-items:center;min-height:60vh;text-align:center;position:relative;background:var(--white)}
+.aynlogo{position:absolute;top:12px;right:12px;width:72px;height:72px;object-fit:contain}
+.fees-box{background:var(--white);border-radius:8px;padding:12px 18px 12px 12px;margin-top:80px;text-align:right;width:100%;max-width:340px;color:var(--muted);border:2px solid var(--muted);display:flex;flex-direction:column;align-items:flex-end;justify-content:center;min-height:19px}
+.fees-title{font-weight:700;color:var(--accent);margin:0;font-size:16px;width:100%;text-align:right}
+.fees-amount{font-size:14px;color:var(--muted);margin-top:4px;font-weight:700;width:100%;text-align:right}
+.spacer{height:10px}
+.methods{display:flex;flex-direction:column;gap:14px;align-items:center;margin-top:12px;justify-content:center;width:100%;max-width:360px}
+.pay-badge{width:320px;height:72px;border-radius:10px;padding:0;display:flex;align-items:center;justify-content:center;background:var(--white);border:2px solid var(--muted);cursor:pointer}
+.apple-btn{background:var(--white);border:1px solid #ddd;padding:10px 12px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+.apple-btn svg{display:block}
+.apple-btn:active{transform:translateY(1px)}
+.paynow{width:320px;background:var(--accent);color:#fff;border:none;padding:12px 16px;border-radius:10px;font-weight:700;cursor:pointer;height:72px}
+.pay-badge img{display:block;height:40px}
+.product-image{margin-top:18px;text-align:center;min-height:120px}
+.product-image img{max-width:100%;border-radius:8px}
+
+@media (max-width:480px){
+  .payment-widget{padding:14px}
+  .aynlogo{width:34px;height:34px}
+  .paynow{padding:10px}
+}
