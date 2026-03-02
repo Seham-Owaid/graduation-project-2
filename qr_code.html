@@ -1,0 +1,91 @@
+<!--  غلا -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تعيين QR</title>
+
+    <style>
+        body {
+            margin: 0;
+            background-color: #ebedf0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 430px;
+            background-color: #ffffff;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .content-area {
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .qr-code-box {
+            width: 250px;
+            height: 250px;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            display: block;
+            width: 80%;
+            padding: 15px;
+            background: #1b7c80;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+
+        <div class="content-area center-content">
+            <!-- صندوق عرض الـ QR -->
+            <div id="qr-image-container" class="qr-code-box">
+                <svg id="default-qr" viewBox="0 0 100 100" width="100%" height="100%"></svg>
+                <img id="captured-image" src="#" alt="الصورة الملتقطة"
+                    style="display: none; width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
+            </div>
+
+
+            <!-- زر الدخول -->
+            <a href="dashboard.html" class="btn-primary">دخول</a>
+        </div>
+
+    </div>
+
+    <script>
+        const captured = sessionStorage.getItem('capturedImage');
+        if (captured) {
+            document.getElementById('default-qr').style.display = 'none';
+            const img = document.getElementById('captured-image');
+            img.src = captured;
+            img.style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

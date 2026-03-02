@@ -9,17 +9,89 @@
 </head>
 <body>
   <div class="container">
-  <img src="aynlogo.png" alt="شعار" class="logo">
+  <img src="eyelogo.png" alt="شعار" class="logo">
 
     <h1>تسجيل دخول ولي الأمر</h1>
 
-    <form class="login-form" autocomplete="off">
+    <form id="loginForm" class="login-form" autocomplete="off">
       <input id="userid" name="userid" type="text" inputmode="numeric" placeholder="رقم المستخدم (ID)" required>
 
-      <input id="nationalid" name="nationalid" type="password" placeholder="رقم الهوية الوطنية (كلمة المرور)" required>
+      <div class="password-wrapper">
+        <input id="nationalid" name="nationalid"
+               type="password"
+               inputmode="numeric"
+               pattern="\d{10}"
+               maxlength="10"
+               placeholder="رقم الهوية الوطنية (كلمة المرور)" required>
 
-      <button type="submit" class="submit">تسجيل الدخول</button>
+        <button id="toggleEye" class="pw-toggle" type="button" aria-label="إظهار/إخفاء كلمة المرور">
+          <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </button>
+      </div>
+
+      <div id="nationalid-msg" aria-live="polite" class="nationalid-msg"></div>
+
+      <button id="submitBtn" type="submit" class="submit">تسجيل الدخول</button>
     </form>
+    <script>
+      (function(){
+        const national = document.getElementById('nationalid');
+        const msg = document.getElementById('nationalid-msg');
+        const toggle = document.getElementById('toggleEye');
+        const form = document.getElementById('loginForm');
+
+        // Allow only digits, enforce maxlength 10, and update validation message
+        national.addEventListener('input', function(e){
+          const cleaned = this.value.replace(/\D+/g,'').slice(0,10);
+          if (this.value !== cleaned) this.value = cleaned;
+
+          if (this.value.length === 0) {
+            msg.textContent = '';
+            this.classList.remove('valid');
+            this.classList.remove('invalid');
+            return;
+          }
+
+          if (this.value.length === 10) {
+            msg.style.color = '#0a0';
+            msg.textContent = 'تم التحقق.';
+            this.classList.add('valid');
+            this.classList.remove('invalid');
+          } else {
+            msg.style.color = '#c00';
+            msg.textContent = 'يجب أن يتكون من 10 أرقام بالضبط.';
+            this.classList.add('invalid');
+            this.classList.remove('valid');
+          }
+        });
+
+        // Toggle visibility (swap SVGs)
+        const eyeSVG = '<svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+        const eyeOffSVG = '<svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2l20 20"></path><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a19.68 19.68 0 0 1 4.12-5.16"></path><path d="M9.88 9.88a3 3 0 0 0 4.24 4.24"></path></svg>';
+
+        toggle.addEventListener('click', function(){
+          if (national.type === 'password') {
+            national.type = 'text';
+            toggle.innerHTML = eyeOffSVG;
+            toggle.setAttribute('aria-label','إخفاء كلمة المرور');
+          } else {
+            national.type = 'password';
+            toggle.innerHTML = eyeSVG;
+            toggle.setAttribute('aria-label','إظهار كلمة المرور');
+          }
+        });
+
+        // Prevent form submit if invalid
+        form.addEventListener('submit', function(e){
+          if (!/^\d{10}$/.test(national.value)) {
+            e.preventDefault();
+            msg.style.color = '#c00';
+            msg.textContent = 'الرجاء إدخال رقم هوية صحيح مكوّن من 10 أرقام.';
+            national.focus();
+          }
+        });
+      })();
+    </script>
   </div>
 </div>
 </body>
