@@ -1,0 +1,227 @@
+// بدايه داليا
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام رسوم الباص</title>
+    <style>
+        :root {
+            --bg: #f4f7fa; --white: #ffffff; --accent: #1b7c80;
+            --paid: #16a34a; --paid-bg: #dcfce7; --unpaid: #dc2626; --unpaid-bg: #fee2e2;
+            --text: #1e1e2e; --muted: #6b7280; --border: #e5e7eb;
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
+        body { background: var(--bg); color: var(--text); direction: rtl; }
+
+        /* الشاشات */
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* الهيدر العام */
+        .header { background: var(--accent); padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; color: #fff; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 18px; font-weight: 800; }
+        .back-btn { background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+
+        /* --- شاشة القائمة الرئيسية (بطاقات) --- */
+        .stats-bar { display: flex; gap: 10px; padding: 20px; overflow-x: auto; scrollbar-width: none; }
+        .stat-chip { background: white; padding: 10px 15px; border-radius: 14px; box-shadow: var(--shadow); font-size: 13px; font-weight: 700; flex-shrink: 0; display: flex; gap: 6px; }
+        .stat-chip span { color: var(--accent); }
+
+        .tabs { display: flex; gap: 8px; padding: 0 20px 15px; }
+        .tab { padding: 8px 20px; border-radius: 25px; border: 1px solid var(--border); background: white; cursor: pointer; font-weight: 600; font-size: 13px; color: var(--muted); transition: 0.2s; }
+        .tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+        .list { padding: 0 20px 30px; display: grid; gap: 12px; }
+        .card { background: white; padding: 16px; border-radius: 20px; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow); cursor: pointer; transition: 0.2s; }
+        .card:active { transform: scale(0.98); }
+        .avatar { width: 52px; height: 52px; border-radius: 15px; object-fit: cover; background: #eee; }
+        .card-info { flex: 1; }
+        .card-info strong { font-size: 15px; display: block; margin-bottom: 4px; }
+        .status-tag { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 700; display: inline-block; }
+        .status-tag.paid { background: var(--paid-bg); color: var(--paid); }
+        .status-tag.unpaid { background: var(--unpaid-bg); color: var(--unpaid); }
+
+        /* --- شاشة كشف الحساب (قوائم) --- */
+        .profile-section { background: white; margin: 20px; padding: 20px; border-radius: 24px; display: flex; align-items: center; gap: 15px; box-shadow: var(--shadow); }
+        .p-img { width: 64px; height: 64px; border-radius: 18px; object-fit: cover; }
+        
+        .statement-box { background: white; margin: 0 20px 40px; border-radius: 24px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid #f0f0f0; }
+        .statement-header { padding: 16px 20px; background: #fafafa; border-bottom: 1px solid #eee; font-weight: 800; font-size: 13px; color: var(--muted); }
+        
+        .statement-row { display: flex; align-items: center; padding: 16px 20px; border-bottom: 1px solid #f6f6f6; }
+        .statement-row:last-child { border-bottom: none; }
+        
+        .st-icon { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-left: 12px; font-weight: bold; font-size: 18px; }
+        .st-icon.paid { background: var(--paid-bg); color: var(--paid); }
+        .st-icon.unpaid { background: var(--unpaid-bg); color: var(--unpaid); }
+        
+        .st-desc { flex: 1; }
+        .st-desc .title { font-size: 14px; font-weight: 700; display: block; margin-bottom: 2px; }
+        .st-desc .date { font-size: 11px; color: var(--muted); }
+        
+        .st-amount { text-align: left; font-weight: 800; font-size: 14px; }
+        .st-amount.paid { color: var(--paid); }
+        .st-amount.unpaid { color: var(--unpaid); }
+    </style>
+</head>
+<body>
+
+<div id="screen-list" class="screen active">
+    <div class="header">
+        <div style="width:36px"></div>
+        <h1>رسوم الباص</h1>
+        <div style="width:36px"></div>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-chip">إجمالي الطلاب: <span id="stat-all">0</span></div>
+        <div class="stat-chip">مدفوع: <span id="stat-paid" style="color:var(--paid)">0</span></div>
+        <div class="stat-chip">غير مدفوع: <span id="stat-unpaid" style="color:var(--unpaid)">0</span></div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" onclick="filterData('all', this)">الكل</button>
+        <button class="tab" onclick="filterData('paid', this)">تم الدفع</button>
+        <button class="tab" onclick="filterData('unpaid', this)">غير مدفوع</button>
+    </div>
+
+    <div class="list" id="main-list">
+        </div>
+</div>
+
+<div id="screen-account" class="screen">
+    <div class="header">
+        <button class="back-btn" onclick="showScreen('screen-list')">➔</button>
+        <h1>كشف الحساب</h1>
+        <div style="width:36px"></div>
+    </div>
+
+    <div class="profile-section">
+        <img id="acc-img" src="" class="p-img">
+        <div>
+            <h2 id="acc-name" style="font-size: 18px; margin-bottom: 2px;"></h2>
+            <p id="acc-meta" style="font-size: 12px; color: var(--muted);"></p>
+        </div>
+    </div>
+
+    <div class="statement-box">
+        <div class="statement-header">سجل الحركات المالية</div>
+        <div id="statement-rows">
+            </div>
+    </div>
+</div>
+
+<script>
+    // بيانات الطالبات
+    const students = {
+        "1": {
+            name: "سارة محمد علي",
+            meta: "الصف الثالث ",
+            img: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/SU4JSnEqKB/487lwons_expires_30_days.png",
+            status: "paid",
+            history: [
+                { label: "رسوم النقل - الترم الأول", date: "12 أكتوبر 2024", price: "200 ريال", type: "paid" },
+                { label: "رسوم النقل - الترم الثاني", date: "05 فبراير 2025", price: "200 ريال", type: "paid" }
+            ]
+        },
+        "2": {
+            name: "شهد سلطان الرويلي",
+            meta: "الصف الثالث ",
+            img: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/SU4JSnEqKB/wp256fto_expires_30_days.png",
+            status: "unpaid",
+            history: [
+                { label: "رسوم النقل - الترم الأول", date: "مستحق السداد", price: "200 ريال", type: "unpaid" }
+            ]
+        },
+        "3": {
+            name: "روز أحمد الحربي",
+            meta: "الصف الثاني ",
+            img: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/SU4JSnEqKB/spp6k5qg_expires_30_days.png",
+            status: "paid",
+            history: [
+                { label: "رسوم النقل - الترم الأول", date: "20 أكتوبر 2024", price: "200 ريال", type: "paid" }
+            ]
+        }
+    };
+
+    // وظيفة بناء البطاقات الرئيسية
+    function renderMainList() {
+        const container = document.getElementById('main-list');
+        container.innerHTML = '';
+        let p = 0, u = 0;
+
+        Object.keys(students).forEach(id => {
+            const s = students[id];
+            if(s.status === 'paid') p++; else u++;
+
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.setAttribute('data-status', s.status);
+            card.onclick = () => openStatement(id);
+            card.innerHTML = `
+                <img src="${s.img}" class="avatar">
+                <div class="card-info">
+                    <strong>${s.name}</strong>
+                    <span class="status-tag ${s.status}">${s.status === 'paid' ? 'تم الدفع' : 'لم يتم الدفع'}</span>
+                </div>
+                <span style="color:#ccc; font-weight:bold">‹</span>
+            `;
+            container.appendChild(card);
+        });
+
+        document.getElementById('stat-all').innerText = Object.keys(students).length;
+        document.getElementById('stat-paid').innerText = p;
+        document.getElementById('stat-unpaid').innerText = u;
+    }
+
+    // وظيفة فتح كشف الحساب (نظام القائمة)
+    function openStatement(id) {
+        const s = students[id];
+        document.getElementById('acc-name').innerText = s.name;
+        document.getElementById('acc-meta').innerText = s.meta;
+        document.getElementById('acc-img').src = s.img;
+        
+        const rowsContainer = document.getElementById('statement-rows');
+        rowsContainer.innerHTML = '';
+        
+        s.history.forEach(item => {
+            rowsContainer.innerHTML += `
+                <div class="statement-row">
+                    <div class="st-icon ${item.type}">${item.type === 'paid' ? '✓' : '!'}</div>
+                    <div class="st-desc">
+                        <span class="title">${item.label}</span>
+                        <span class="date">${item.date}</span>
+                    </div>
+                    <div class="st-amount ${item.type}">${item.price}</div>
+                </div>
+            `;
+        });
+
+        showScreen('screen-account');
+    }
+
+    function showScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function filterData(status, btn) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.card').forEach(c => {
+            c.style.display = (status === 'all' || c.dataset.status === status) ? 'flex' : 'none';
+        });
+    }
+
+    // التشغيل الأولي
+    renderMainList();
+</script>
+
+</body>
+</html>
+//داليا
