@@ -1,0 +1,252 @@
+<!-- بداية شجون -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>خريطة التتبع</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --accent: #1b7c80;
+            --bg: #f2f4f7;
+            --card: #ffffff;
+            --border: #e5e7eb;
+            --shadow: 0 10px 25px rgba(0, 0, 0, .08);
+            --muted: #6b7280;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* نفس فكرة الطلاب: الصفحة تبدو كجوال حتى على اللابتوب */
+        body {
+            margin: 0 auto;
+            font-family: "Tajawal", sans-serif;
+            background: var(--bg);
+            max-width: 430px;
+            /* نفس عرض الطالبات */
+        }
+
+        /* ===== HEADER (نفس التركيب) ===== */
+        .header {
+            background: var(--accent);
+            padding: 16px 16px 14px;
+            box-shadow: var(--shadow);
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, .18);
+            border: 1px solid rgba(255, 255, 255, .18);
+            text-decoration: none;
+            cursor: pointer;
+            flex: 0 0 auto;
+        }
+
+        .back-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 2.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        #pageTitle {
+            margin: 0;
+            color: #fff;
+            font-weight: 800;
+            font-size: clamp(18px, 2.5vw, 22px);
+            line-height: 1;
+            text-align: center;
+            flex: 1;
+        }
+
+        .header-spacer {
+            width: 40px;
+            height: 40px;
+            flex: 0 0 auto;
+        }
+
+        /* ===== المحتوى ===== */
+        .content {
+            padding: 14px 14px 90px;
+            display: flex;
+            flex-direction: column;
+            /* عمود واحد مثل التطبيق */
+            gap: 14px;
+        }
+
+        /* بطاقة الباص */
+        .bus-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .bus-info {
+            color: #111827;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        .bus-photo {
+            width: 86px;
+            height: 64px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            flex: 0 0 auto;
+        }
+
+        /* الخريطة */
+        .map-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-img {
+            width: 100%;
+            display: block;
+            border-radius: 12px;
+            object-fit: cover;
+            min-height: 220px;
+        }
+
+        /* مؤشر الباص فوق الخريطة */
+        .bus-pin {
+            position: absolute;
+            top: 55%;
+            left: 58%;
+            transform: translate(-50%, -50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: #fff;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 14px 26px rgba(0, 0, 0, .18);
+        }
+
+        .bus-pin img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 14px 14px;
+            text-align: center;
+        }
+
+        /* شاشات أصغر */
+        @media (max-width:360px) {
+            .header-inner {
+                gap: 6px;
+            }
+
+            #pageTitle {
+                font-size: 18px;
+            }
+
+            .bus-photo {
+                width: 76px;
+                height: 56px;
+            }
+
+            .map-img {
+                min-height: 200px;
+            }
+        }
+
+        /* شاشات أكبر: نبقيها نفس شكل الجوال */
+        @media (min-width:431px) {
+            body {
+                max-width: 430px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-inner">
+            <a href="javascript:void(0)" class="back-btn" id="backBtn" aria-label="رجوع">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="15 18 9 12 15 6" />
+                </svg>
+            </a>
+            <h1 id="pageTitle">خريطة التتبع</h1>
+            <div class="header-spacer"></div>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- بطاقة معلومات الباص -->
+        <div class="bus-card">
+            <div class="bus-info">
+                رقم : 23<br>
+                عدد المقاعد : 18<br>
+                عدد المقاعد المتاحة : 4
+            </div>
+            <img class="bus-photo" src="bus.jpg" alt="صورة الباص">
+        </div>
+
+        <!-- الخريطة -->
+        <div class="map-card">
+            <img class="map-img" src="map.png" alt="الخريطة">
+            <div class="bus-pin" title="موقع الباص">
+                <img src="bus.jpg" alt="الباص">
+            </div>
+        </div>
+
+    </div>
+
+
+    <script>
+        document.getElementById("backBtn").onclick = () => history.back();
+    </script>
+
+</body>
+
+</html>
+<!-- نهاية شجون -->
