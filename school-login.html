@@ -1,0 +1,109 @@
+<!-- بدايه فتون -->
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>تسجيل دخول المدرسة </title>
+  <link rel="stylesheet" href="parent-login.css">
+</head>
+
+<body>
+  <div class="container">
+    <img src="eyelogo.png" alt="شعار" class="logo">
+    <h1>تسجيل دخول المدرسة</h1>
+
+    <form id="loginForm" class="login-form" autocomplete="off">
+      <input id="userid" name="userid" type="text" inputmode="numeric" placeholder="رقم المستخدم (ID)" required>
+
+      <div class="password-wrapper">
+        <input id="nationalid" name="nationalid"
+               type="password"
+               inputmode="numeric"
+               maxlength="10"
+               placeholder="كلمة المرور" required>
+
+        <button id="toggleEye" class="pw-toggle" type="button">
+          <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+      </div>
+
+      <div id="nationalid-msg" class="nationalid-msg"></div>
+
+      <button id="submitBtn" type="submit" class="submit">تسجيل الدخول</button>
+    </form>
+  </div>
+
+<script>
+(function(){
+
+  const passwordInput = document.getElementById('nationalid');
+  const msg = document.getElementById('nationalid-msg');
+  const toggle = document.getElementById('toggleEye');
+  const form = document.getElementById('loginForm');
+
+  const STORAGE_KEY = "school_password";
+
+  // إظهار / إخفاء كلمة المرور
+  toggle.addEventListener('click', function(){
+    passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+  });
+
+  // عند فتح الصفحة
+  const savedPassword = localStorage.getItem(STORAGE_KEY);
+
+  if (!savedPassword) {
+    msg.style.color = "#1b7c80";
+    msg.textContent = "أول تسجيل دخول — يرجى تعيين كلمة مرور جديدة.";
+  } else {
+    msg.textContent = "";
+  }
+
+  // عند تسجيل الدخول
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const enteredPassword = passwordInput.value.trim();
+
+    if (!enteredPassword) {
+      msg.style.color = "#c00";
+      msg.textContent = "يرجى إدخال كلمة المرور.";
+      return;
+    }
+
+    const storedPassword = localStorage.getItem(STORAGE_KEY);
+
+    // أول مرة → تخزين كلمة المرور
+    if (!storedPassword) {
+      localStorage.setItem(STORAGE_KEY, enteredPassword);
+      msg.style.color = "#16a34a";
+      msg.textContent = "تم تعيين كلمة المرور بنجاح ✔";
+      setTimeout(() => {
+        window.location.href = "list.html"; // صفحة الدخول بعد النجاح
+      }, 800);
+      return;
+    }
+
+    // دخول لاحق → التحقق
+    if (enteredPassword === storedPassword) {
+      msg.style.color = "#16a34a";
+      msg.textContent = "تم تسجيل الدخول ✔";
+      setTimeout(() => {
+        window.location.href = "list.html";
+      }, 500);
+    } else {
+      msg.style.color = "#c00";
+      msg.textContent = "كلمة المرور غير صحيحة.";
+    }
+
+  });
+
+})();
+</script>
+
+</body>
+</html>
+<!-- نهاية فتون -->

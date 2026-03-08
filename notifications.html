@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>التنبيهات</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="header">
+    <div class="header-inner">
+        <button class="back-btn" onclick="history.back()">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <h1>التنبيهات </h1>
+        <div class="header-spacer"></div>
+    </div>
+</div>
+
+
+<div class="notifications-container" id="notificationsList">
+  <!-- الإشعارات تظهر هنا -->
+</div>
+
+<script>
+const STORAGE_KEY = "notifications";
+const HOURS_48 = 48 * 60 * 60 * 1000;
+
+// جلب الإشعارات من التخزين
+function getNotifications() {
+  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+}
+
+// حفظ الإشعارات
+function saveNotifications(list) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+}
+
+// حذف القديمة
+function removeOldNotifications() {
+  const now = Date.now();
+
+  const valid = getNotifications().filter(n => {
+    return now - n.time <= HOURS_48;
+  });
+
+  saveNotifications(valid);
+  return valid;
+}
+
+// عرض الإشعارات
+function renderNotifications() {
+  const container = document.getElementById("notificationsList");
+  const list = removeOldNotifications();
+
+  if (list.length === 0) {
+    container.innerHTML = "<p>لا توجد إشعارات حديثة</p>";
+    return;
+  }
+
+  container.innerHTML = list.map(n => `
+    <div class="notification">
+      <div>${n.text}</div>
+      <div class="notification-time">
+        ${new Date(n.time).toLocaleString("ar")}
+      </div>
+    </div>
+  `).join("");
+}
+renderNotifications(); 
+
+function addNotification(text) {
+  const list = JSON.parse(localStorage.getItem("notifications")) || [];
+
+  list.unshift({
+    text: text,
+    time: Date.now()
+  });
+
+  localStorage.setItem("notifications", JSON.stringify(list));
+}
+</script>
+</body>
+</html>
