@@ -1,0 +1,238 @@
+<!-- بداية شجون -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>خريطة التتبع</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --accent: #1b7c80;
+    --bg: #f2f4f7;
+    --card: #ffffff;
+    --border: #e5e7eb;
+    --shadow: 0 10px 25px rgba(0,0,0,.08);
+    --muted: #6b7280;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0 auto;
+    font-family: "Tajawal", sans-serif;
+    background: var(--bg);
+    max-width: 430px;
+}
+
+/* HEADER */
+.header {
+    background: var(--accent);
+    padding: 16px 16px 14px;
+    box-shadow: var(--shadow);
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.back-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.18);
+    text-decoration: none;
+    cursor: pointer;
+    flex: 0 0 auto;
+}
+
+.back-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+#pageTitle {
+    margin: 0;
+    color: #fff;
+    font-weight: 800;
+    font-size: clamp(18px,2.5vw,22px);
+    line-height: 1;
+    text-align: center;
+    flex: 1;
+}
+
+.header-spacer { width: 40px; height: 40px; flex: 0 0 auto; }
+
+/* CONTENT */
+.content {
+    padding: 14px 14px 90px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.bus-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.bus-info { color: #111827; font-weight: 600; font-size: 14px; line-height: 1.9; }
+
+.bus-photo {
+    width: 86px;
+    height: 64px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    flex: 0 0 auto;
+}
+
+.map-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.map-img {
+    width: 100%;
+    display: block;
+    border-radius: 12px;
+    object-fit: cover;
+    min-height: 220px;
+}
+
+.bus-pin {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 14px 26px rgba(0,0,0,.18);
+}
+
+.bus-pin img { width: 30px; height: 30px; object-fit: contain; border-radius: 10px; }
+
+.loading { text-align:center; padding:30px; color:var(--muted); font-size:14px; }
+
+/* شاشات أصغر */
+@media(max-width:360px){
+    .header-inner{gap:6px;}
+    #pageTitle{font-size:18px;}
+    .bus-photo{width:76px;height:56px;}
+    .map-img{min-height:200px;}
+}
+
+/* شاشات أكبر */
+@media(min-width:431px){
+    body{max-width:430px;}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="header-inner">
+        <a href="javascript:void(0)" class="back-btn" id="backBtn">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </a>
+        <h1 id="pageTitle">خريطة التتبع</h1>
+        <div class="header-spacer"></div>
+    </div>
+</div>
+
+<div class="content" id="content">
+    <div class="loading">جاري تحميل البيانات...</div>
+</div>
+
+<script>
+document.getElementById("backBtn").onclick = ()=>history.back();
+
+// جلب بيانات الباصات من قاعدة البيانات
+async function loadBuses(){
+    try{
+        const res = await fetch("api_bus.php"); // هذا الملف يرجع JSON من قاعدة البيانات
+        if(!res.ok) throw new Error();
+        const data = await res.json();
+
+        displayBuses(data);
+    }catch(e){
+        document.getElementById("content").innerHTML = '<p class="loading">تعذر الاتصال بقاعدة البيانات</p>';
+    }
+}
+
+// عرض الباصات
+function displayBuses(buses){
+    const container = document.getElementById("content");
+    container.innerHTML = "";
+
+    if(buses.length === 0){
+        container.innerHTML = '<p class="loading">لا توجد باصات</p>';
+        return;
+    }
+
+    buses.forEach(bus => {
+        // بطاقة الباص
+        const busCard = document.createElement("div");
+        busCard.className = "bus-card";
+        busCard.innerHTML = `
+            <div class="bus-info">
+                رقم : ${bus.number}<br>
+                عدد المقاعد : ${bus.seats}<br>
+                عدد المقاعد المتاحة : ${bus.available}
+            </div>
+            <img class="bus-photo" src="${bus.photo}" alt="صورة الباص">
+        `;
+
+        // بطاقة الخريطة
+        const mapCard = document.createElement("div");
+        mapCard.className = "map-card";
+        mapCard.innerHTML = `
+            <img class="map-img" src="${bus.map}" alt="الخريطة">
+            <div class="bus-pin" title="موقع الباص" style="top:${bus.top};left:${bus.left};">
+                <img src="${bus.photo}" alt="الباص">
+            </div>
+        `;
+
+        container.appendChild(busCard);
+        container.appendChild(mapCard);
+    });
+}
+
+loadBuses();
+</script>
+
+</body>
+</html>
+<!-- نهاية شجون -->

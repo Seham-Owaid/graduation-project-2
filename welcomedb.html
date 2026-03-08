@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عين رقيب</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:"Tajawal",sans-serif;
+    background:#f2f2f2;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.phone{
+    width:360px;
+    height:640px;
+    background:#ffffff;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.splash-card{
+    text-align:center;
+    padding:20px;
+}
+
+.logo{
+    width:120px;
+    margin-bottom:15px;
+}
+
+.app-title{
+    color:#21867a;
+    margin-bottom:10px;
+}
+
+.tagline{
+    color:#555;
+    margin-bottom:25px;
+}
+
+.btn{
+    display:none;
+    padding:12px 30px;
+    background:#2fa4a9;
+    color:white;
+    text-decoration:none;
+    border-radius:10px;
+    font-size:16px;
+}
+
+.btn:hover{
+    background:#21867a;
+}
+
+.loading{
+    color:#777;
+    margin-top:10px;
+    font-size:14px;
+}
+
+.error{
+    color:#dc2626;
+    margin-top:10px;
+    font-size:14px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<main class="phone">
+
+<div class="splash-card">
+
+<img class="logo" src="eyelogo.png" alt="شعار عين رقيب">
+
+<h1 class="app-title">عين رقيب</h1>
+
+<p class="tagline">
+أمان أبنائك بعد الله يبدأ من هنا<br>
+اطمئن وتواصل
+</p>
+
+<div id="loading" class="loading">
+جاري الاتصال بالنظام...
+</div>
+
+<a id="startBtn" class="btn" href="role.html">
+متابعة
+</a>
+
+</div>
+
+</main>
+
+<script>
+
+async function checkServer(){
+
+    try{
+
+        const response = await fetch("api.php");
+
+        if(!response.ok){
+            throw new Error();
+        }
+
+        document.getElementById("loading").style.display="none";
+        document.getElementById("startBtn").style.display="inline-block";
+
+    }catch(e){
+
+        document.getElementById("loading").innerHTML =
+        "تعذر الاتصال بالنظام";
+
+        document.getElementById("loading").classList.add("error");
+
+    }
+
+}
+
+checkServer();
+
+</script>
+
+</body>
+
+</html>
