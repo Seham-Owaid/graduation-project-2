@@ -1,20 +1,71 @@
-<!-- بداية شجون -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>الطالبات</title>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="students.css" />
+  <style>
+    /* الحل النهائي للمربعات الرمادية */
+    .icon-box, .student-avatar-img {
+      background-color: white !important; /* يجبر الخلفية تكون بيضاء سادة */
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px; /* تناسب شكل الكرت */
+    }
+
+    .icon-box img, .student-avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* يخلي الصورة تغطي المربعات الرمادية */
+      display: block;
+    }
+
+    .section-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+
+    .add-student-btn {
+      background-color: #1b7c80;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-family: 'Tajawal', sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .student-row {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      background: white;
+      margin-bottom: 10px;
+      border-radius: 12px;
+    }
+
+    /* تعديل مقاس صورة الطالبة في القائمة الداخلية */
+    .student-avatar-img {
+      width: 45px;
+      height: 45px;
+      margin-left: 15px;
+    }
+  </style>
 </head>
 
 <body>
 
-  <!-- HEADER -->
   <div class="header">
     <div class="header-inner">
-      <a href="javascript:void(0)" class="back-btn" id="backBtn" aria-label="رجوع">
+      <a href="javascript:void(0)" class="back-btn" id="backBtn">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
       </a>
       <h1 id="pageTitle">الطالبات</h1>
@@ -22,90 +73,36 @@
     </div>
   </div>
 
-  <div class="section-label" id="sectionLabel">قائمة الصفوف</div>
-
-  <!-- GRADE LIST (default view) -->
-  <div class="list" id="gradeList">
-
-    <div class="card" onclick="showStudents('1')">
-      <div class="icon-box"><span class="grade-num">1</span></div>
-      <div class="info">
-        <div class="name">الصف الأول الابتدائي</div>
-        <div class="meta">3 طالبات</div>
-      </div>
-      <div class="arrow-btn">
-        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-      </div>
-    </div>
-
-    <div class="card" onclick="showStudents('2')">
-      <div class="icon-box"><span class="grade-num">2</span></div>
-      <div class="info">
-        <div class="name">الصف الثاني الابتدائي</div>
-        <div class="meta">3 طالبات</div>
-      </div>
-      <div class="arrow-btn">
-        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-      </div>
-    </div>
-
-    <div class="card" onclick="showStudents('3')">
-      <div class="icon-box"><span class="grade-num">3</span></div>
-      <div class="info">
-        <div class="name">الصف الثالث الابتدائي</div>
-        <div class="meta">3 طالبات</div>
-      </div>
-      <div class="arrow-btn">
-        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-      </div>
-    </div>
-
-    <div class="card" onclick="showStudents('4')">
-      <div class="icon-box"><span class="grade-num">4</span></div>
-      <div class="info">
-        <div class="name">الصف الرابع الابتدائي</div>
-        <div class="meta">3 طالبات</div>
-      </div>
-      <div class="arrow-btn">
-        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-      </div>
-    </div>
-
-    <div class="card" onclick="showStudents('5')">
-      <div class="icon-box"><span class="grade-num">5</span></div>
-      <div class="info">
-        <div class="name">الصف الخامس الابتدائي</div>
-        <div class="meta">3 طالبات</div>
-      </div>
-      <div class="arrow-btn">
-        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-      </div>
-    </div>
-
-    <div class="card" onclick="showStudents('6')">
-      <div class="icon-box"><span class="grade-num">6</span></div>
-      <div class="info">
-        <div class="name">الصف السادس الابتدائي</div>
-        <div class="meta">3 طالبات</div>
-      </div>
-      <div class="arrow-btn">
-        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-      </div>
-    </div>
-
+  <div class="section-header-row">
+    <div class="section-label" id="sectionLabel">قائمة الصفوف</div>
+    <button class="add-student-btn" id="addBtn" onclick="addNewStudent()">+ إضافة طالبة</button>
   </div>
 
-  <!-- STUDENT LIST (hidden by default) -->
-  <div id="studentList" style="display:none"></div>
+  <div class="list" id="gradeList">
+    <script>
+      const grades = ["الأول", "الثاني", "الثالث", "الرابع", "الخامس", "السادس"];
+      grades.forEach((name, i) => {
+        const num = i + 1;
+        document.write(`
+          <div class="card" onclick="showStudents('${num}')">
+            <div class="icon-box"><img src="student.png" alt="icon"></div>
+            <div class="info">
+              <div class="name">الصف ${name} الابتدائي</div>
+              <div class="meta" id="count-${num}">3 طالبات</div>
+            </div>
+            <div class="arrow-btn"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </div>
+        `);
+      });
+    </script>
+  </div>
+
+  <div id="studentList" style="display:none; padding: 10px;"></div>
 
   <script>
-    const gradeNames = {
-      "1": "الأول", "2": "الثاني", "3": "الثالث",
-      "4": "الرابع", "5": "الخامس", "6": "السادس"
-    };
-
-    const avatars = ["🧒","👧","🧕","👩","🌸","⭐️"];
-
+    const gradeNames = { "1": "الأول", "2": "الثاني", "3": "الثالث", "4": "الرابع", "5": "الخامس", "6": "السادس" };
+    const studentIconPath = "student.png"; 
+    
     const studentsByGrade = {
       "1": [{ name: "جود العتيبي", bus: 12 }, { name: "لانا الشهراني", bus: 15 }, { name: "رهف المالكي", bus: 9 }],
       "2": [{ name: "ريم الحارثي", bus: 12 }, { name: "دانة العتيبي", bus: 7 }, { name: "سارة الغامدي", bus: 15 }],
@@ -117,44 +114,49 @@
 
     function showStudents(grade) {
       const list = studentsByGrade[grade] || [];
-      const label = gradeNames[grade] || grade;
-
-      document.getElementById('pageTitle').textContent = طالبات الصف ${label};
-      document.getElementById('sectionLabel').textContent = 'قائمة الطالبات';
-      document.getElementById('gradeList').style.display = 'none';
-
-      // زر الرجوع يرجع لقائمة الصفوف (مو history.back)
+      const label = gradeNames[grade];
+      document.getElementById('pageTitle').innerText = "طالبات الصف " + label;
+      document.getElementById('gradeList').style.
+      display = 'none';
+      document.getElementById('addBtn').style.display = 'none';
+      document.getElementById('studentList').style.display = 'block';
       document.getElementById('backBtn').onclick = showGrades;
 
-      const rows = list.map((s, i) => `
+      let rows = list.map((s) => `
         <div class="student-row">
-          <div class="student-avatar">${avatars[i % avatars.length]}</div>
-          <div class="student-info">
-            <div class="student-name">${s.name}</div>
-            <div class="student-meta">الصف ${label}</div>
+          <img src="${studentIconPath}" alt="طالبة" class="student-avatar-img">
+          <div style="flex:1;">
+            <div style="font-weight:bold; color:#333;">${s.name}</div>
+            <div style="font-size:12px; color:#1b7c80;">باص ${s.bus}</div>
           </div>
-          <span class="bus-badge">باص ${s.bus}</span>
         </div>
-      ).join('') || `<p class="empty">لا توجد طالبات لهذا الصف.</p>;
-
-      document.getElementById('studentList').innerHTML = <div class="student-card">${rows}</div>;
-      document.getElementById('studentList').style.display = 'block';
+      `).join('');
+      
+      document.getElementById('studentList').innerHTML = rows || '<p style="text-align:center;">لا توجد طالبات.</p>';
     }
 
     function showGrades() {
-      document.getElementById('pageTitle').textContent = 'الطالبات';
-      document.getElementById('sectionLabel').textContent = 'قائمة الصفوف';
+      document.getElementById('pageTitle').innerText = 'الطالبات';
       document.getElementById('gradeList').style.display = 'flex';
+      document.getElementById('addBtn').style.display = 'block';
       document.getElementById('studentList').style.display = 'none';
-
-      // هنا زر الرجوع يرجع لصفحة قبلها لو تبين
       document.getElementById('backBtn').onclick = () => history.back();
     }
 
-    // الوضع الافتراضي: الرجوع يرجع لصفحة قبلها
+    function addNewStudent() {
+      const name = prompt("أدخلي اسم الطالبة:");
+      if (!name) return;
+      const grade = prompt("أدخلي رقم الصف (1-6):");
+      if (!grade || !studentsByGrade[grade]) { alert("رقم الصف غير صحيح!"); return; }
+      const bus = prompt("أدخلي رقم الباص:");
+      if (!bus) return;
+
+      studentsByGrade[grade].push({ name, bus });
+      document.getElementById(`count-${grade}`).innerText = studentsByGrade[grade].length + " طالبات";
+      alert("تمت الإضافة بنجاح!");
+    }
+
     document.getElementById('backBtn').onclick = () => history.back();
   </script>
-
 </body>
 </html>
-<!-- نهاية شجون -->
