@@ -1,0 +1,64 @@
+<!-- بداية شجون -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>تفاصيل الباص</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="students.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <a href="buses.html" class="back-btn" id="backBtn" aria-label="رجوع">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </a>
+      <h1 id="pageTitle">ركاب باص ...</h1>
+      <div class="header-spacer"></div>
+    </div>
+  </div>
+
+  <div class="section-label" id="sectionLabel">قائمة الطالبات في الباص</div>
+
+  <!-- BUS DETAILS -->
+  <div id="busDetailsList"></div>
+
+  <script>
+    const avatars = ["🧒","👧","🧕","👩","🌸","⭐️"];
+
+    const studentsByBus = {
+      "20": [{ name: "جود العتيبي", grade: "الأول" }, { name: "لانا الشهراني", grade: "الثاني" }, { name: "رهف المالكي", grade: "الثالث" }],
+      "21": [{ name: "ريم الحارثي", grade: "الرابع" }, { name: "دانة العتيبي", grade: "الخامس" }, { name: "سارة الغامدي", grade: "السادس" }]
+    };
+
+    // استخراج رقم الباص من الرابط
+    const urlParams = new URLSearchParams(window.location.search);
+    const busNumber = urlParams.get('bus');
+
+    if (busNumber) {
+        document.getElementById('pageTitle').textContent = `ركاب باص ${busNumber}`;
+        const list = studentsByBus[busNumber] || [];
+
+        const rows = list.map((s, i) => `
+          <div class="student-row">
+            <div class="student-avatar">${avatars[i % avatars.length]}</div>
+            <div class="student-info">
+              <div class="student-name">${s.name}</div>
+              <div class="student-meta">الصف ${s.grade}</div>
+            </div>
+          </div>
+        `).join('') || `<p class="empty" style="text-align:center; margin-top: 2rem; color: #666;">لا توجد طالبات في هذا الباص.</p>`;
+
+        document.getElementById('busDetailsList').innerHTML = `<div class="student-card" style="margin: 0 1rem;">${rows}</div>`;
+    } else {
+        document.getElementById('pageTitle').textContent = `خطأ`;
+        document.getElementById('busDetailsList').innerHTML = `<p class="empty" style="text-align:center; margin-top: 2rem; color: #666;">لم يتم تحديد الباص.</p>`;
+    }
+  </script>
+
+</body>
+</html>
+<!-- نهاية شجون -->
