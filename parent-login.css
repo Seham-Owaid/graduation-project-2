@@ -33,9 +33,12 @@ body{
   min-height:100vh;
   display:flex;
   flex-direction:column;
-  align-items:center;
+  align-items:stretch;
   justify-content:center;
   padding:24px;
+  width:100%;
+  max-width:680px;
+  margin:0 auto;
 }
 
 .logo{
@@ -43,6 +46,7 @@ body{
   height:auto;
   object-fit:contain;
   margin-bottom:14px;
+  align-self:center;
 }
 
 h1{
@@ -50,12 +54,13 @@ h1{
   font-size:20px;
   font-weight:700;
   color:var(--accent);
+  text-align:center;
 }
 
 
 .login-form{
   width:100%;
-  max-width:360px;
+  max-width:680px;
   background:var(--card);
   padding:20px;
   border-radius:12px;
@@ -132,3 +137,5 @@ input:focus{
 
 /* ensure input reserves space for left toggle */
 .password-wrapper input{padding-left:44px}
+
+

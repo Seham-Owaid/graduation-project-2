@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="attendance-responsive.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>تطبيق عين رقيب</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
@@ -27,17 +28,19 @@
             font-family: 'Tajawal', sans-serif;
             background: var(--bg);
             min-height: 100vh;
-            max-width: 430px;
+            width: 100%;
             margin: 0 auto;
             color: var(--text);
         }
 
-        /* HEADER */
         .header {
             background: var(--accent);
             position: sticky;
             top: 0;
             z-index: 100;
+            width: 100%;
+            max-width: none;
+            margin: 0 auto;
         }
 
         .header-inner {
@@ -81,21 +84,42 @@
             color: #fff;
         }
 
-        /* MAIN CONTENT */
         .content {
-            padding: 20px 14px 100px;
+            padding: 22px 20px 96px;
             display: flex;
             flex-direction: column;
             gap: 14px;
+            width: 100%;
+            max-width: none;
+            margin: 0 auto;
+            border-radius: 0;
+            border: none;
+            direction: rtl;
+            align-items: center;
+            min-height: calc(100vh - 70px);
+            text-align: center;
+            position: relative;
+            background: var(--white);
         }
 
-        /* STUDENT CARD */
         .student-card {
             background: var(--white);
-            border-radius: 22px;
+            border-radius: 8px;
             box-shadow: var(--shadow);
             overflow: hidden;
             animation: slideUp 0.35s ease both;
+            padding: 12px 18px 12px 12px;
+            margin-top: 0;
+            text-align: right;
+            width: 100%;
+            max-width: 680px;
+            color: var(--muted);
+            border: 2px solid var(--muted);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+            min-height: 19px;
         }
 
         @keyframes slideUp {
@@ -112,7 +136,7 @@
         .student-img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             display: block;
         }
 
@@ -121,6 +145,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            width: 100%;
         }
 
         .detail-row {
@@ -130,6 +155,7 @@
             padding: 10px 14px;
             background: var(--bg);
             border-radius: 12px;
+            width: 100%;
         }
 
         .detail-row .label {
@@ -144,14 +170,14 @@
             color: var(--text);
         }
 
-        /* STATUS ACTIONS */
         .status-actions {
             display: flex;
             gap: 12px;
             animation: slideUp 0.35s ease both;
             animation-delay: 0.1s;
         }
-.btn {
+
+        .btn {
             flex: 1;
             padding: 14px;
             border: none;
@@ -180,7 +206,6 @@
 
         .btn-absent:hover { background: #b91c1c; }
 
-        /* STATUS FEEDBACK */
         .status-feedback {
             display: none;
             align-items: center;
@@ -206,14 +231,13 @@
         .present .dot { background: var(--paid); }
         .absent  .dot { background: var(--unpaid); }
 
-        /* BOTTOM NAV */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
             width: 100%;
-            max-width: 430px;
+            max-width: none;
             background: var(--white);
             border-top: 1px solid var(--border);
             padding: 10px 24px;
@@ -258,11 +282,40 @@
         }
 
         .nav-item.active span { color: var(--accent); }
+                @media (max-width:480px){
+                    .content{padding:14px 14px 86px}
+                    .header{max-width:100%}
+                    .student-card{border-radius:14px}
+                    .student-details{padding:12px 10px 14px}
+                    .detail-row{padding:8px 8px}
+                    .status-actions{gap:8px}
+                    .btn{padding:10px;font-size:15px}
+                    .bottom-nav{max-width:100%;padding:8px 10px}
+                }
+
+                @media (min-width:481px) and (max-width:900px){
+                    .content{padding:18px 18px 90px;max-width:96vw}
+                    .student-card{border-radius:18px}
+                    .student-details{padding:14px 14px 16px}
+                    .detail-row{padding:10px 10px}
+                    .status-actions{gap:10px}
+                    .btn{padding:12px;font-size:16px}
+                    .bottom-nav{max-width:96vw;padding:10px 18px}
+                }
+
+                @media (min-width:901px){
+                    .content{padding:22px 20px 96px;max-width:none}
+                    .student-card{border-radius:8px}
+                    .student-details{padding:16px 18px 18px}
+                    .detail-row{padding:10px 14px}
+                    .status-actions{gap:14px}
+                    .btn{padding:14px;font-size:16px}
+                    .bottom-nav{max-width:none;padding:10px 24px}
+                }
     </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
     <div class="header-inner">
         <button class="back-btn" onclick="history.back()">
@@ -277,13 +330,11 @@
     </div>
 </div>
 
-<!-- MAIN CONTENT -->
 <main class="content">
 
-    <!-- STUDENT CARD -->
-    <div class="student-card">
-        <div class="student-image-container">
-            <img src="https://storage.googleapis.com/tagjs-prod.appspot.com/v1/SU4JSnEqKB/wp256fto_expires_30_days.png" alt="صورة الطالبة شهد سلطان" class="student-img">
+    <div class="student-card" style="margin-top:0;">
+        <div class="student-image-container" style="display:flex;align-items:center;justify-content:center;width:100%;height:220px;overflow:hidden;">
+            <img src="studenta.png" alt="صورة طالب" class="student-img" style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;">
         </div>
         <div class="student-details">
             <div class="detail-row">
@@ -292,7 +343,7 @@
             </div>
             <div class="detail-row">
                 <span class="label">الصف</span>
-<span class="value">ثالث متوسط</span>
+                <span class="value">ثالث متوسط</span>
             </div>
             <div class="detail-row">
                 <span class="label">رقم الباص</span>
@@ -301,31 +352,28 @@
         </div>
     </div>
 
-    <!-- STATUS FEEDBACK -->
     <div class="status-feedback" id="statusFeedback">
         <span class="dot"></span>
         <span id="statusText"></span>
     </div>
 
-    <!-- ACTION BUTTONS -->
-    <div class="status-actions">
-        <button id="presentBtn" class="btn btn-present" onclick="setStatus('present')">حاضر</button>
-        <button id="absentBtn" class="btn btn-absent" onclick="setStatus('absent')">غائب</button>
+    <div class="status-actions" style="width:100%;max-width:680px;display:flex;flex-direction:row;gap:14px;margin:0 auto;">
+        <button id="presentBtn" class="btn btn-present" onclick="setStatus('present')" style="width:50%;">حاضر</button>
+        <button id="absentBtn" class="btn btn-absent" onclick="setStatus('absent')" style="width:50%;">غائب</button>
     </div>
 
 </main>
 
-<!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-    <div class="nav-item active">
+    <div class="nav-item active" onclick="window.location.href='attendance.html'">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         <span>الرئيسية</span>
     </div>
-    <div class="nav-item">
+    <div class="nav-item" onclick="window.location.href='tracking.html'">
         <svg viewBox="0 0 24 24"><path d="M12 21s-6-5.33-6-11a6 6 0 1 1 12 0c0 5.67-6 11-6 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
         <span>تتبع الباص</span>
     </div>
-    <div class="nav-item">
+    <div class="nav-item" onclick="window.location.href='payment.html'">
         <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2" ry="2"/><circle cx="12" cy="12" r="3"/><path d="M6 10h.01"/><path d="M18 14h.01"/></svg>
         <span>الرسوم</span>
     </div>

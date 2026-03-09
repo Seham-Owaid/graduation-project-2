@@ -7,10 +7,22 @@
     <link rel="stylesheet" href="payment.css">
   </head>
   <body>
+    <div class="header">
+      <div class="header-inner">
+        <button class="back-btn image-btn" title="logo">
+          <img src="eyelogo.png" alt="شعار عين رقيب" class="header-eye" style="width:100%;height:100%;object-fit:contain;display:block;">
+        </button>
+        <div class="header-logo">
+          <span>عين رقيب</span>
+        </div>
+        <button class="back-btn">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </button>
+      </div>
+    </div>
+
     <!-- widget class kept for styling, but not shown to user -->
     <div class="payment-widget">
-      <img class="aynlogo" alt="aynlogo" src="eyelogo.png">
-
       <div class="fees-box">
         <div class="fees-title">الرسوم</div>
         <div class="fees-amount">200 ريال لترم واحد</div>
@@ -19,9 +31,17 @@
       <div class="spacer"></div>
 
       <div class="methods">
-        <button class="pay-badge" id="payBadge" title="badge">
-          <img src="pay.png" alt="pay" style="width: 60px;  height:auto;display:block">
-        </button>
+        <div class="method-row">
+          <button class="pay-badge" id="payBadge" title="Apple Pay">
+            <img src="pay.png" alt="Apple Pay" style="width: 54px; height:auto;display:block">
+          </button>
+
+          <button class="pay-badge mada-badge" id="madaBadge" title="مدى">
+            <img src="pay2.png" alt="شعار مدى" style="width:54px;height:auto;display:block;">
+          </button>
+        </div>
+
+      
 
         <button class="paynow" id="payNow">ادفع الآن</button>
       </div>
@@ -29,10 +49,175 @@
       <div class="product-image"></div>
     </div>
 
+    <div class="modal-backdrop" id="madaModal" aria-hidden="true">
+      <div class="mada-modal" role="dialog" aria-modal="true" aria-labelledby="madaTitle">
+        <div class="mada-header">
+          <h3 id="madaTitle">بيانات بطاقة مدى</h3>
+          <button type="button" class="close-modal" id="closeMada">×</button>
+        </div>
+        <form id="madaForm" novalidate>
+          <label class="field-label" for="cardHolder">اسم حامل البطاقة</label>
+          <input id="cardHolder" class="field-input" type="text" placeholder="الاسم كما على البطاقة" required>
+
+          <label class="field-label" for="cardNumber">رقم البطاقة</label>
+          <input id="cardNumber" class="field-input" type="text" inputmode="numeric" placeholder="0000 0000 0000 0000" maxlength="19" required>
+
+          <div class="field-row">
+            <div>
+              <label class="field-label" for="expiry">تاريخ الانتهاء</label>
+              <input id="expiry" class="field-input" type="text" inputmode="numeric" placeholder="MM/YY" maxlength="5" required>
+            </div>
+            <div>
+              <label class="field-label" for="cvv">CVV</label>
+              <input id="cvv" class="field-input" type="password" inputmode="numeric" placeholder="***" maxlength="4" required>
+            </div>
+          </div>
+
+          <button type="submit" class="confirm-pay">تأكيد الدفع</button>
+        </form>
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <div class="nav-item" onclick="window.location.href='attendance.html'">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>الرئيسية</span>
+      </div>
+      <div class="nav-item" onclick="window.location.href='tracking.html'">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-6-5.33-6-11a6 6 0 1 1 12 0c0 5.67-6 11-6 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <span>تتبع الباص</span>
+      </div>
+      <div class="nav-item active" onclick="window.location.href='payment.html'">
+        <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2" ry="2"/><circle cx="12" cy="12" r="3"/><path d="M6 10h.01"/><path d="M18 14h.01"/></svg>
+        <span>الرسوم</span>
+      </div>
+    </nav>
+
     <script>
-      document.getElementById('payNow').addEventListener('click', function(){
-        alert('بدء عملية الدفع — هذه مجرد محاكاة.');
+      const amountText = '200.00';
+      const payBadge = document.getElementById('payBadge');
+      const madaBadge = document.getElementById('madaBadge');
+      const payNow = document.getElementById('payNow');
+      const madaModal = document.getElementById('madaModal');
+      const closeMada = document.getElementById('closeMada');
+      const madaForm = document.getElementById('madaForm');
+      const cardNumber = document.getElementById('cardNumber');
+      const expiry = document.getElementById('expiry');
+      const cvv = document.getElementById('cvv');
+      let selectedMethod = 'apple';
+
+      function setSelected(method) {
+        selectedMethod = method;
+        payBadge.classList.toggle('selected', method === 'apple');
+        madaBadge.classList.toggle('selected', method === 'mada');
+      }
+
+      async function launchApplePay() {
+        if (!window.PaymentRequest) {
+          alert('Apple Pay غير متاح على هذا المتصفح/الجهاز.');
+          return;
+        }
+
+        try {
+          const request = new PaymentRequest(
+            [
+              {
+                supportedMethods: 'https://apple.com/apple-pay',
+                data: {
+                  version: 3,
+                  merchantIdentifier: 'merchant.com.example',
+                  merchantCapabilities: ['supports3DS'],
+                  supportedNetworks: ['mada', 'visa', 'masterCard'],
+                  countryCode: 'SA'
+                }
+              }
+            ],
+            {
+              total: {
+                label: 'رسوم الترم',
+                amount: { currency: 'SAR', value: amountText }
+              }
+            }
+          );
+
+          const response = await request.show();
+          await response.complete('success');
+          alert('تمت عملية الدفع عبر Apple Pay بنجاح.');
+        } catch (error) {
+          alert('تعذر إكمال Apple Pay على هذا الجهاز.');
+        }
+      }
+
+      function openMadaModal() {
+        setSelected('mada');
+        madaModal.classList.add('show');
+        madaModal.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeMadaModal() {
+        madaModal.classList.remove('show');
+        madaModal.setAttribute('aria-hidden', 'true');
+      }
+
+      payBadge.addEventListener('click', function () {
+        setSelected('apple');
+        launchApplePay();
       });
+
+      madaBadge.addEventListener('click', openMadaModal);
+
+      payNow.addEventListener('click', function () {
+        if (selectedMethod === 'mada') {
+          openMadaModal();
+          return;
+        }
+        launchApplePay();
+      });
+
+      closeMada.addEventListener('click', closeMadaModal);
+
+      madaModal.addEventListener('click', function (event) {
+        if (event.target === madaModal) {
+          closeMadaModal();
+        }
+      });
+
+      cardNumber.addEventListener('input', function () {
+        const digits = this.value.replace(/\D/g, '').slice(0, 16);
+        this.value = digits.replace(/(.{4})/g, '$1 ').trim();
+      });
+
+      expiry.addEventListener('input', function () {
+        const digits = this.value.replace(/\D/g, '').slice(0, 4);
+        if (digits.length >= 3) {
+          this.value = digits.slice(0, 2) + '/' + digits.slice(2);
+        } else {
+          this.value = digits;
+        }
+      });
+
+      cvv.addEventListener('input', function () {
+        this.value = this.value.replace(/\D/g, '').slice(0, 4);
+      });
+
+      madaForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const holder = document.getElementById('cardHolder').value.trim();
+        const numberDigits = cardNumber.value.replace(/\s/g, '');
+        const expiryValue = expiry.value;
+        const cvvValue = cvv.value;
+
+        if (!holder || numberDigits.length !== 16 || !/^\d{2}\/\d{2}$/.test(expiryValue) || !/^\d{3,4}$/.test(cvvValue)) {
+          alert('الرجاء إدخال جميع بيانات البطاقة بشكل صحيح.');
+          return;
+        }
+
+        closeMadaModal();
+        alert('تم إرسال بيانات بطاقة مدى والدفع بنجاح (وضع تجريبي).');
+        madaForm.reset();
+      });
+
+      setSelected('apple');
     </script>
   </body>
 </html>

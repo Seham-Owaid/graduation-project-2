@@ -34,6 +34,13 @@
       <button id="submitBtn" type="submit" class="submit">تسجيل الدخول</button>
     </form>
     <script>
+      document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // تحقق من صحة البيانات هنا إذا أردت
+        window.location.href = 'attendance.html';
+      });
+    </script>
+    <script>
       (function(){
         const national = document.getElementById('nationalid');
         const msg = document.getElementById('nationalid-msg');
@@ -83,12 +90,18 @@
 
         // Prevent form submit if invalid
         form.addEventListener('submit', function(e){
-          if (!/^\d{10}$/.test(national.value)) {
-            e.preventDefault();
+          e.preventDefault();
+
+          const userId = document.getElementById('userid').value.trim();
+
+          if (!userId || !/^\d{10}$/.test(national.value)) {
             msg.style.color = '#c00';
             msg.textContent = 'الرجاء إدخال رقم هوية صحيح مكوّن من 10 أرقام.';
             national.focus();
+            return;
           }
+
+          window.location.href = 'attendance.html';
         });
       })();
     </script>
