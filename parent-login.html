@@ -14,7 +14,7 @@
     <h1>تسجيل دخول ولي الأمر</h1>
 
     <form id="loginForm" class="login-form" autocomplete="off">
-      <input id="userid" name="userid" type="text" inputmode="numeric" placeholder="رقم المستخدم (ID)" required>
+      <input id="userid" name="userid" type="text" inputmode="numeric" maxlength="5" placeholder="رقم المستخدم (ID)" required>
 
       <div class="password-wrapper">
         <input id="nationalid" name="nationalid"
@@ -34,77 +34,64 @@
       <button id="submitBtn" type="submit" class="submit">تسجيل الدخول</button>
     </form>
     <script>
-      document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // تحقق من صحة البيانات هنا إذا أردت
-        window.location.href = 'attendance.html';
+            // تفعيل زر العين لإظهار/إخفاء كلمة المرور
+            const passwordInput = document.getElementById('nationalid');
+            const toggleEye = document.getElementById('toggleEye');
+            toggleEye.addEventListener('click', function() {
+              if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+              } else {
+                passwordInput.type = 'password';
+              }
+            });
+      // عند بدء الكتابة في حقل المستخدم، أضف PA تلقائياً في البداية، واسمح فقط بـ 3 أرقام بعدها
+      const userIdInput = document.getElementById('userid');
+      userIdInput.addEventListener('input', function(e) {
+          let val = this.value.replace(/[^\d]/g, '');
+        if (val.length > 3) val = val.slice(0, 3);
+        this.value = val ? 'PA' + val : '';
+      });
+      userIdInput.addEventListener('focus', function() {
+        if (!this.value) this.value = 'PA';
+      });
+      userIdInput.addEventListener('blur', function() {
+        if (this.value === 'PA') this.value = '';
+      });
+        // قاعدة بيانات الحسابات (ثابتة)
+        const parentAccount = {userId: 'PA504', nationalId: '1111111111'};
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+          e.preventDefault();
+          const userId = userIdInput.value.trim();
+          const national = document.getElementById('nationalid').value.trim();
+          const msg = document.getElementById('nationalid-msg');
+          msg.textContent = '';
+          msg.style.color = '#c00';
+          // تحقق من صحة الإدخال فقط عند الضغط على زر تسجيل الدخول
+          if (!/^PA\d{3}$/.test(userId)) {
+            msg.textContent = 'رقم المستخدم يجب أن يبدأ بـ PA ويتكون من 3 أرقام بعدها';
+            userIdInput.focus();
+            return;
+          }
+          if (!/^\d{10}$/.test(national)) {
+            msg.textContent = 'رقم الهوية يجب أن يتكون من 10 أرقام';
+            document.getElementById('nationalid').focus();
+            return;
+          }
+          // تحقق من الحساب
+          if (userId !== parentAccount.userId || national !== parentAccount.nationalId) {
+            msg.textContent = 'لا يوجد حساب بهذا الرقم أو كلمة المرور غير صحيحة.';
+            msg.style.color = '#c00';
+            return;
+          }
+          // إذا كان الحساب صحيح تظهر رسالة التحقق وينتقل للواجهة
+          msg.style.color = '#0a0';
+          msg.textContent = 'تم التحقق.';
+          setTimeout(function() {
+            window.location.href = 'attendance.html';
+          }, 600);
       });
     </script>
-    <script>
-      (function(){
-        const national = document.getElementById('nationalid');
-        const msg = document.getElementById('nationalid-msg');
-        const toggle = document.getElementById('toggleEye');
-        const form = document.getElementById('loginForm');
-
-        // Allow only digits, enforce maxlength 10, and update validation message
-        national.addEventListener('input', function(e){
-          const cleaned = this.value.replace(/\D+/g,'').slice(0,10);
-          if (this.value !== cleaned) this.value = cleaned;
-
-          if (this.value.length === 0) {
-            msg.textContent = '';
-            this.classList.remove('valid');
-            this.classList.remove('invalid');
-            return;
-          }
-
-          if (this.value.length === 10) {
-            msg.style.color = '#0a0';
-            msg.textContent = 'تم التحقق.';
-            this.classList.add('valid');
-            this.classList.remove('invalid');
-          } else {
-            msg.style.color = '#c00';
-            msg.textContent = 'يجب أن يتكون من 10 أرقام بالضبط.';
-            this.classList.add('invalid');
-            this.classList.remove('valid');
-          }
-        });
-
-        // Toggle visibility (swap SVGs)
-        const eyeSVG = '<svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
-        const eyeOffSVG = '<svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2l20 20"></path><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a19.68 19.68 0 0 1 4.12-5.16"></path><path d="M9.88 9.88a3 3 0 0 0 4.24 4.24"></path></svg>';
-
-        toggle.addEventListener('click', function(){
-          if (national.type === 'password') {
-            national.type = 'text';
-            toggle.innerHTML = eyeOffSVG;
-            toggle.setAttribute('aria-label','إخفاء كلمة المرور');
-          } else {
-            national.type = 'password';
-            toggle.innerHTML = eyeSVG;
-            toggle.setAttribute('aria-label','إظهار كلمة المرور');
-          }
-        });
-
-        // Prevent form submit if invalid
-        form.addEventListener('submit', function(e){
-          e.preventDefault();
-
-          const userId = document.getElementById('userid').value.trim();
-
-          if (!userId || !/^\d{10}$/.test(national.value)) {
-            msg.style.color = '#c00';
-            msg.textContent = 'الرجاء إدخال رقم هوية صحيح مكوّن من 10 أرقام.';
-            national.focus();
-            return;
-          }
-
-          window.location.href = 'attendance.html';
-        });
-      })();
-    </script>
+    <!-- تم حذف السكريبت الثاني لمنع الانتقال المباشر -->
   </div>
 </div>
 </body>
