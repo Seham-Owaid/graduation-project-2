@@ -358,8 +358,22 @@
     </div>
 
     <div class="status-actions" style="width:100%;max-width:680px;display:flex;flex-direction:row;gap:14px;margin:0 auto;">
-        <button id="presentBtn" class="btn btn-present" onclick="setStatus('present')" style="width:50%;">حاضر</button>
-        <button id="absentBtn" class="btn btn-absent" onclick="setStatus('absent')" style="width:50%;">غائب</button>
+        <button id="presentBtn" class="btn btn-present" onclick="askParent('present')" style="width:50%;">حاضر</button>
+        <button id="absentBtn" class="btn btn-absent" onclick="askParent('absent')" style="width:50%;">غائب</button>
+    </div>
+
+    <!-- نافذة السؤال للوالدين -->
+    <div id="modalOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;align-items:flex-end;justify-content:center;">
+        <div style="background:#fff;width:100%;border-radius:28px 28px 0 0;padding:28px 24px 48px;display:flex;flex-direction:column;align-items:center;gap:20px;direction:rtl;">
+            <div id="modalIcon" style="width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;"></div>
+            <div id="modalTitle" style="font-size:20px;font-weight:800;"></div>
+            <div id="modalQuestion" style="font-size:15px;color:#6b7280;text-align:center;line-height:1.7;"></div>
+            <div style="font-size:18px;font-weight:800;color:#1b7c80;background:#e6fafb;padding:8px 24px;border-radius:12px;">شهد سلطان</div>
+            <div style="display:flex;gap:12px;width:100%;">
+                <button id="confirmBtn" onclick="confirmStatus()" style="flex:1;padding:15px;border:none;border-radius:16px"></button>
+                <button onclick="closeModal()" style="flex:1;padding:15px;border:none;border-radius:16px;background:#e5e7eb;color:#1e1e2e;font-weight:700;">إلغاء</button>
+            </div>
+        </div>
     </div>
 
 </main>
@@ -380,19 +394,55 @@
 </nav>
 
 <script>
-    function setStatus(status) {
+    let pendingStatus = null;
+
+    function askParent(status) {
+        pendingStatus = status;
+        const overlay = document.getElementById('modalOverlay');
+        const icon = document.getElementById('modalIcon');
+        const title = document.getElementById('modalTitle');
+        const question = document.getElementById('modalQuestion');
+        const confirmBtn = document.getElementById('confirmBtn');
+
+        overlay.style.display = 'flex';
+        if (status === 'present') {
+            icon.style.background = '#dcfce7';
+            icon.textContent = '✅';
+            title.textContent = 'تأكيد الحضور';
+            question.textContent = 'هل تؤكد أن الطالبة ستركب الباص اليوم وستكون حاضرة؟';
+            confirmBtn.style.background = '#16a34a';
+            confirmBtn.textContent = '✅ نعم، حاضرة';
+        } else {
+            icon.style.background = '#fee2e2';
+            icon.textContent = '❌';
+            title.textContent = 'تأكيد الغياب';
+            question.textContent = 'هل تؤكد أن الطالبة لن تأتي إلى المدرسة اليوم وستكون غائبة؟';
+            confirmBtn.style.background = '#dc2626';
+            confirmBtn.textContent = '❌ نعم، غائبة';
+        }
+    }
+
+    function confirmStatus() {
         const feedback = document.getElementById('statusFeedback');
         const text = document.getElementById('statusText');
+        const overlay = document.getElementById('modalOverlay');
 
         feedback.classList.remove('show', 'present', 'absent');
+        overlay.style.display = 'none';
 
-        if (status === 'present') {
+        if (pendingStatus === 'present') {
             feedback.classList.add('show', 'present');
             text.textContent = 'تم تسجيل الطالبة حاضرة بنجاح';
         } else {
             feedback.classList.add('show', 'absent');
             text.textContent = 'تم تسجيل الطالبة غائبة';
         }
+        pendingStatus = null;
+    }
+
+    function closeModal() {
+        document.getElementById('modalOverlay').style.display = 'none';
+        pendingStatus = null;
     }
 </script>
 
